@@ -49,7 +49,7 @@ exports = module.exports = Service;
 
 ```config.json
 {
-    "routes": "./routes.json"
+    "routes": "./routes.json",
     "http": {
         "port": 3000
     }

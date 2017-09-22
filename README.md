@@ -78,7 +78,12 @@ exports = module.exports = Service;
     }
     "https": {
         "port": 3443
-        ...
+        "key": "./certificate.key",
+        "cert": "./certificate.crt",
+        "ca": [
+            "./certificate.interm.1.pem",
+            "./certificate.interm.2.pem"
+        ]
     }
 }
 ```

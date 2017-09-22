@@ -1,7 +1,7 @@
 {
     "name": "qwebs-http",
-    "version": "0.3.1",
-    "description": "Http server for Qwebs",
+    "version": "0.3.2",
+    "description": "Http/https server for Qwebs",
     "main": "index.js",
     "dependencies": {
         "qwebs": "^0.2.18"

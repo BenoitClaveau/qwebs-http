@@ -45,13 +45,40 @@ exports = module.exports = Service;
 }
 ```
 
-## Create config.json
+## config.json for http
 
 ```config.json
 {
     "routes": "./routes.json",
     "http": {
         "port": 3000
+    }
+}
+```
+
+## config.json for https
+
+```config.json
+{
+    "routes": "./routes.json",
+    "https": {
+        "port": 3443
+    }
+}
+```
+
+## config.json with redirection to https
+
+```config.json
+{
+    "routes": "./routes.json",
+    "http": {
+        "port": 3000,
+        redirect: true
+    }
+    "https": {
+        "port": 3443
+        ...
     }
 }
 ```

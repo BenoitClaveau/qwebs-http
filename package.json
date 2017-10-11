@@ -1,13 +1,26 @@
 {
     "name": "qwebs-http",
-    "version": "0.3.5",
+    "version": "1.0.0",
     "description": "Http/https server for Qwebs",
     "main": "index.js",
     "dependencies": {
-        "qwebs": "latest"
+        "qwebs": "latest",
+        "qwebs-router": "latest",
+        "clean-css": "latest",
+        "html-compress": "latest",
+        "multiparty": "latest",
+        "qs": "latest",
+        "sass.js": "latest",
+        "uglify-js": "latest"
+    },
+    "devDependencies": {
+        "jasmine": "latest",
+        "coveralls": "latest",
+        "istanbul": "latest"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "node node_modules/jasmine/bin/jasmine tests/*.spec.js --verbose",
+        "test-cover": "node_modules/.bin/istanbul cover node_modules/jasmine/bin/jasmine tests/*.spec.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
     },
     "repository": {
         "type": "git",
@@ -17,7 +30,8 @@
         "https",
         "qwebs",
         "config",
-        "webserver"
+        "webserver",
+        "promise"
     ],
     "author": {
         "name": "Benoît Claveau",

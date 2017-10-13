@@ -6,6 +6,7 @@
     "dependencies": {
         "qwebs": "latest",
         "qwebs-router": "latest",
+        "JSONStream": "latest",
         "clean-css": "latest",
         "html-compress": "latest",
         "multiparty": "latest",

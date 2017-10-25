@@ -5,6 +5,7 @@
     "main": "index.js",
     "dependencies": {
         "qwebs": "latest",
+        "oups": "latest",
         "clean-css": "latest",
         "html-compress": "latest",
         "multiparty": "latest",

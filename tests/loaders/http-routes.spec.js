@@ -5,7 +5,7 @@
  */
 "use strict";
 
-const Qwebs = require("../../lib/qwebs");
+const Qwebs = require("qwebs");
 const RoutesLoader = require("../../lib/loaders/routes");
 
 describe("routesLoader", () => {

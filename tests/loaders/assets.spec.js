@@ -5,7 +5,7 @@
  */
 "use strict";
 
-const Qwebs = require("../../lib/qwebs");
+const Qwebs = require("qwebs");
 const AssetsLoader = require("../../lib/loaders/assets");
 
 describe("assetsLoader", () => {

@@ -5,7 +5,7 @@
  */
 "use strict";
 
-const Qwebs = require("../../lib/qwebs");
+const Qwebs = require("qwebs");
 const Asset = require('../../lib/routes/asset');
 const http = require("http");
 

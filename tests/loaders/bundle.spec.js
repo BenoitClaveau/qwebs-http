@@ -5,7 +5,7 @@
  */
 "use strict";
 
-const Qwebs = require("../../lib/qwebs");
+const Qwebs = require("qwebs");
 const BundleLoader = require("../../lib/loaders/bundle");
 const path = require("path");
 

@@ -194,7 +194,6 @@ You could override this default behaviour with POO. Override the default respons
 ```services/my-response.js
 "use strict";
 
-const WebError = require("qwebs").WebError;
 const ResponseService = require("qwebs/lib/services/response");
 
 class MyResponseService extends ResponseService {
@@ -204,7 +203,7 @@ class MyResponseService extends ResponseService {
 
     send(response, dataToSend) {
         return new Promise((resolve, reject) => {
-            if (dataToSend == undefined) reject(new WebError({ message: "No data." }));
+            if (dataToSend == undefined) reject(new Error("No data."));
 
             dataToSend.headers = data.headers || {};
             dataToSend.headers["Cache-Control"] = "private";

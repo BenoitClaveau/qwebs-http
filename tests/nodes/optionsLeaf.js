@@ -5,7 +5,7 @@
  */
 "use strict";
 
-const Qwebs = require("../../lib/qwebs");
+const Qwebs = require("qwebs");
 const OptionsLeaf = require('../../lib/utils/optionsLeaf');
 
 describe("options", () => {

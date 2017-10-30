@@ -5,40 +5,41 @@
  */
 "use strict";
 
-const Qwebs = require("../../lib/qwebs");
+const Qwebs = require("qwebs");
 const http = require("http");
 const request = require('request');
 const process = require('process');
 const JSONStream = require('JSONStream');
 const Readable = require('stream').Readable;
+process.on('unhandledRejection', (err, p) => {
+    console.error(err)
+});
 
 describe("reponse", () => {
+    let $qwebs = new Qwebs({ dirname: __dirname, config: {}});
     let server;
 
-    beforeAll(function(done) {
-        process.on('unhandledRejection', (err, p) => {
-            console.error(err)
-        });
-
-        let $qwebs = new Qwebs({ dirname: __dirname, config: {}});
+    before(async done => {
+        try {
+        $qwebs.inject("$http", "../../lib/qwebs-http");
         $qwebs.inject("$info", "./info");
-        $qwebs.get("/stream", "$info", "getStream");
-        $qwebs.get("/stream-with-string", "$info", "getStreamWithString");
-        $qwebs.get("/stream-multiple-types", "$info", "getStreamMultipleTypes");
-        $qwebs.get("/stream-error", "$info", "getStreamError");
-        $qwebs.get("/stream-error-after-sending", "$info", "getStreamErrorAfterSending");
-        
-        return $qwebs.load().then(() => {
-            server = http.createServer((request, response) => {
-                return $qwebs.invoke(request, response).catch(error => {
-                    response.send({ statusCode: 500, request: request, content: { message: error.message }});
-                });
-            }).listen(1338, done);
-        });
+        const $http = await $qwebs.resolve("$http");
+        $http.get("/stream", "$info", "getStream");
+        $http.get("/stream-with-string", "$info", "getStreamWithString");
+        $http.get("/stream-multiple-types", "$info", "getStreamMultipleTypes");
+        $http.get("/stream-error", "$info", "getStreamError");
+        $http.get("/stream-error-after-sending", "$info", "getStreamErrorAfterSending");
+        await $qwebs.load();
+        }
+        catch(error) {
+            console.error(error)
+        }
     });
 
-    afterAll(function() {
-        if (server) server.close();
+    after(done => {
+        server.close();
+        $qwebs.dispose();
+        done();
     });
 
     it("JSON", done => {

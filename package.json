@@ -1,45 +1,45 @@
 {
-    "name": "qwebs-http",
-    "version": "1.0.0",
-    "description": "Http/https server for Qwebs",
-    "main": "index.js",
-    "dependencies": {
-        "qwebs": "latest",
-        "oups": "latest",
-        "clean-css": "latest",
-        "html-compress": "latest",
-        "multiparty": "latest",
-        "qs": "latest",
-        "sass.js": "latest",
-        "uglify-js": "latest"
-    },
-    "devDependencies": {
-        "mocha": "latest",
-        "coveralls": "latest",
-        "istanbul": "latest"
-    },
-    "scripts": {
-        "test": "node node_modules/mocha/bin/mocha tests",
-        "test-cover": "node_modules/.bin/istanbul cover node_modules/mocha/bin/mocha tests && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/BenoitClaveau/qwebs-http.git"
-    },
-    "keywords": [
-        "https",
-        "qwebs",
-        "config",
-        "webserver",
-        "promise"
-    ],
-    "author": {
-        "name": "Benoît Claveau",
-        "email": "benoit.claveau@gmail.com"
-    },
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/BenoitClaveau/qwebs-http/issues"
-    },
-    "homepage": "https://github.com/BenoitClaveau/qwebs-http"
+  "name": "qwebs-http",
+  "version": "1.0.0",
+  "description": "Http/https server for Qwebs",
+  "main": "index.js",
+  "dependencies": {
+    "qwebs": "latest",
+    "oups": "latest",
+    "clean-css": "latest",
+    "html-compress": "latest",
+    "multiparty": "latest",
+    "qs": "latest",
+    "sass.js": "latest",
+    "uglify-js": "latest"
+  },
+  "devDependencies": {
+    "coveralls": "latest",
+    "istanbul": "latest",
+    "mocha": "^4.0.1"
+  },
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha tests",
+    "test-cover": "node_modules/.bin/istanbul cover node_modules/mocha/bin/mocha tests && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BenoitClaveau/qwebs-http.git"
+  },
+  "keywords": [
+    "https",
+    "qwebs",
+    "config",
+    "webserver",
+    "promise"
+  ],
+  "author": {
+    "name": "Benoît Claveau",
+    "email": "benoit.claveau@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BenoitClaveau/qwebs-http/issues"
+  },
+  "homepage": "https://github.com/BenoitClaveau/qwebs-http"
 }

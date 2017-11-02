@@ -16,7 +16,8 @@
   "devDependencies": {
     "coveralls": "latest",
     "istanbul": "latest",
-    "mocha": "^4.0.1"
+    "mocha": "latest",
+    "expect.js": "latest"
   },
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha tests",

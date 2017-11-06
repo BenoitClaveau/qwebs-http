@@ -11,7 +11,6 @@ const Injector = require("../lib/injector");
 
 describe("router", () => {
     
-
     it("single route", async done => {
         let qwebs = new Qwebs({ dirname: __dirname, config: {}});
         qwebs.inject("$http", "../../lib/qwebs-http");

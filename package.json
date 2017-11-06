@@ -1,15 +1,15 @@
 {
   "name": "qwebs-http",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.0",
   "description": "Http/https server for Qwebs",
   "main": "index.js",
   "dependencies": {
-    "qwebs": "latest",
+    "qwebs": "^1.0.0-beta.0",
     "oups": "latest",
+    "isitforme": "latest",
     "clean-css": "latest",
     "html-compress": "latest",
     "multiparty": "latest",
-    "qs": "latest",
     "sass.js": "latest",
     "uglify-js": "latest"
   },

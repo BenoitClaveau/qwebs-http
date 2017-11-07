@@ -51,15 +51,13 @@ describe("reponse", () => {
     it("Reply stream", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: {}});
         qwebs.inject("Reply", "../../lib/services/reply", { instanciate: false });
-		
+        const Reply = await qwebs.resolve("Reply");    
+        
         let server = http.createServer(async (request, response) => {
             const stream = new FromArray([{ id: 1}, { id: 2}, { id: 3}, { id: 4}]);
-            
-            const Reply = await qwebs.resolve("Reply");            
             const reply = new Reply(request, response, qwebs);
             await reply.mount();
-
-            stream.pipe(reply);
+            stream.pipe(reply.json);
         }).listen(1341, () => {
             request({ method: 'GET', uri: 'http://localhost:1341' }, (error, response, body) => {
                 server.close()

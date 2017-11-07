@@ -16,7 +16,7 @@
             "name": "Tests",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "args": [
-              "${workspaceRoot}/tests/router.spec.js"
+              "${workspaceRoot}/tests/services/reply.spec.js"
             ],
             "cwd": "${workspaceRoot}"
           }

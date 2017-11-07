@@ -5,6 +5,8 @@
  */
 "use strict";
 
+//https://github.com/TypeStrong/typedoc/blob/fa87b1c/src/typings/node/node.d.ts#L186
+
 const expect = require("expect.js");
 const Qwebs = require("qwebs");
 const { FromArray } = require("qwebs");
@@ -30,24 +32,23 @@ describe("reponse", () => {
     //     });
     // });
 
-    it("JSON stream", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: {}});
-        const json = await qwebs.resolve("$json-stream");
+    // it("JSON stream", async () => {
+    //     let qwebs = new Qwebs({ dirname: __dirname, config: {}});
+    //     const json = await qwebs.resolve("$json-stream");
 
-        let server = http.createServer((request, response) => {
-            const stream = new FromArray([{ id: 1}, { id: 2}, { id: 3}, { id: 4}]);
-            stream.pipe(json.stringify).pipe(response);
-        }).listen(1340, () => {
-            request({ method: 'GET', uri: 'http://localhost:1340', json: true }, (error, response, body) => {
-                server.close()
-                expect(error).to.be(null);
-                expect(body.length).to.be(4);
-            });
-        });
-    });
+    //     let server = http.createServer((request, response) => {
+    //         const stream = new FromArray([{ id: 1}, { id: 2}, { id: 3}, { id: 4}]);
+    //         stream.pipe(json.stringify).pipe(response);
+    //     }).listen(1340, () => {
+    //         request({ method: 'GET', uri: 'http://localhost:1340', json: true }, (error, response, body) => {
+    //             server.close()
+    //             expect(error).to.be(null);
+    //             expect(body.length).to.be(4);
+    //         });
+    //     });
+    // });
 
     it("Reply stream", async () => {
-        try {
         let qwebs = new Qwebs({ dirname: __dirname, config: {}});
         qwebs.inject("Reply", "../../lib/services/reply", { instanciate: false });
 		
@@ -57,18 +58,15 @@ describe("reponse", () => {
         let server = http.createServer((request, response) => {
             const stream = new FromArray([{ id: 1}, { id: 2}, { id: 3}, { id: 4}]);
             //stream.pipe(json.stringify).pipe(response);
-            stream.pipe(new Reply(request, response));
+            const reply = new Reply(request, response);
+            stream.pipe(reply);
         }).listen(1341, () => {
-            request({ method: 'GET', uri: 'http://localhost:1341', json: true }, (error, response, body) => {
+            request({ method: 'GET', uri: 'http://localhost:1341' }, (error, response, body) => {
                 server.close()
                 expect(error).to.be(null);
                 expect(body.length).to.be(4);
             });
         });
-        }
-        catch (error) {
-            throw error;
-        }
     });
 
 });

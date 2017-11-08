@@ -22,11 +22,14 @@ class InfoService {
 		return "Hello world.";
 	};
 
-	getInfo(request, response) {
+	getInfo(reply) {
 		let content = {
-			whoiam: this.whoiam()
+			text: "I'm Info service."
 		};
-		return response.send({ request: request, content: content });
+
+		reply.json.write(content);
+
+		//return response.send({ request: request, content: content });
 	};
 
 	getMessage(request, response) {

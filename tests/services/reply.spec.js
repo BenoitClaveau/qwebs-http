@@ -7,6 +7,9 @@
 
 //https://github.com/TypeStrong/typedoc/blob/fa87b1c/src/typings/node/node.d.ts#L186
 
+//EE.listenerCount(dest, 'error')
+
+
 // const EventEmitter = require('events');
 // EventEmitter.usingDomains = true;
 
@@ -71,7 +74,7 @@ describe("reponse", () => {
         });
     });
 
-    it("Reply stream", async () => {
+    xit("Reply stream with domain", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: {}});
         qwebs.inject("Reply", "../../lib/services/reply", { instanciate: false });
         const Reply = await qwebs.resolve("Reply");    
@@ -81,21 +84,31 @@ describe("reponse", () => {
             const reply = new Reply(request, response, qwebs);
             await reply.mount();
 
-            const reqd = domain.create();
-            reqd.add(request);
-            reqd.add(response);
-            reqd.on('error', (er) => {
-                console.error('Error', er, req.url);
+            const d = domain.create();
+            d.add(request)
+            d.add(response)
+            
+            d.on('error', error => {
+                console.error('Error', error, request.url);
                 try {
-                    res.writeHead(500);
-                    res.end('Error occurred, sorry.');
-                } catch (er2) {
-                    console.error('Error sending 500', er2, req.url);
+                    if (response.headersSent) {
+                        response.addTrailers({ "error": "Error occurred, sorry." });
+                        response.end();
+                        
+                    }
+                    else {
+                        response.writeHead(500);
+                        response.end('Error occurred, sorry.');
+                    }
+                } catch (error2) {
+                    console.error('Error sending 500', error2, request.url);
                 }
             })
 
-            const upper = new ToUpper();
-            stream.pipe(upper).pipe(reply.toJSON);
+            d.run(() => {
+                const upper = new ToUpper();
+                stream.pipe(upper).pipe(reply.toJSON);
+            });
 
         }).listen(1341, () => {
             request({ method: 'GET', uri: 'http://localhost:1341', json: true }, (error, response, body) => {
@@ -116,6 +129,7 @@ describe("reponse", () => {
             })
         });
     });
+
 });
 
 const { Transform } = require("stream");

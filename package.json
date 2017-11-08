@@ -1,10 +1,10 @@
 {
   "name": "qwebs-http",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.2",
   "description": "Http/https server for Qwebs",
   "main": "index.js",
   "dependencies": {
-    "qwebs": "^1.0.0-beta.0",
+    "qwebs": "^1.0.0-beta.3",
     "oups": "latest",
     "isitforme": "latest",
     "clean-css": "latest",

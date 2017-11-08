@@ -31,12 +31,12 @@ describe("reponse", () => {
         try {
             let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
             qwebs.inject("$http", "../../index");
-            qwebs.inject("$info", "./services/info");
+            qwebs.inject("$info", "./info");
             const http = await qwebs.resolve("$http");
             http.get("/info", "$info", "getInfo");
             await qwebs.load();
             const client = await qwebs.resolve("$client");
-            const res = await client.get("http//localhost:3001/info");
+            const res = await client.get("http://localhost:3000/info");
             expect(res).to.be("ok");
         }
         catch(error) {

@@ -40,7 +40,8 @@ describe("reponse", () => {
             expect(res).to.be("ok");
         }
         catch(error) {
-            expect(error.stack).to.be(null);
+            console.error(error.stack);
+            expect(error).to.be(null);
         }
     });
 

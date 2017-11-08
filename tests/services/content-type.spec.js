@@ -14,25 +14,25 @@ require("process").on('unhandledRejection', (reason, p) => {
 
 describe("ContentType", () => {
 
-    it("getFromExt", () => {
+    it("get", () => {
         const contentType = new ContentType();
-        contentType.getFromExt(".json").expect("application/json");
-        contentType.getFromExt(".png").expect("image/png");
-        contentType.getFromExt(".jpg").expect("image/jpg");
-        contentType.getFromExt(".gif").expect("image/gif");
-        contentType.getFromExt(".svg").expect("image/svg+xml");
-        contentType.getFromExt(".js").expect("application/javascript");
-        contentType.getFromExt(".html").expect("text/html");
-        contentType.getFromExt(".css").expect("text/css");
-        contentType.getFromExt(".ico").expect("image/x-icon");
-        contentType.getFromExt(".ttf").expect("application/x-font-ttf");
-        contentType.getFromExt(".eot").expect("application/vnd.ms-fontobject");
-        contentType.getFromExt(".woff").expect("application/font-woff");
-        contentType.getFromExt(".appcache").expect("text/cache-manifest");
-        contentType.getFromExt(".txt").expect("text/plain");
-        contentType.getFromExt(".xml").expect("application/xml");
-        contentType.getFromExt(".map").expect("application/json");
-        contentType.getFromExt(".md").expect("text/x-markdown");
-        contentType.getFromExt(".apk").expect("application/vnd.android.package-archive");
+        contentType.get(".json").expect("application/json");
+        contentType.get(".png").expect("image/png");
+        contentType.get(".jpg").expect("image/jpg");
+        contentType.get(".gif").expect("image/gif");
+        contentType.get(".svg").expect("image/svg+xml");
+        contentType.get(".js").expect("application/javascript");
+        contentType.get(".html").expect("text/html");
+        contentType.get(".css").expect("text/css");
+        contentType.get(".ico").expect("image/x-icon");
+        contentType.get(".ttf").expect("application/x-font-ttf");
+        contentType.get(".eot").expect("application/vnd.ms-fontobject");
+        contentType.get(".woff").expect("application/font-woff");
+        contentType.get(".appcache").expect("text/cache-manifest");
+        contentType.get(".txt").expect("text/plain");
+        contentType.get(".xml").expect("application/xml");
+        contentType.get(".map").expect("application/json");
+        contentType.get(".md").expect("text/x-markdown");
+        contentType.get(".apk").expect("application/vnd.android.package-archive");
     });
 });

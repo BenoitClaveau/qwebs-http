@@ -26,14 +26,13 @@ require("process").on('unhandledRejection', (reason, p) => {
 
 describe("reponse", () => {
 
-
     it("response", async done => {
         try {
             let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
             qwebs.inject("$http", "../../index");
             qwebs.inject("$info", "./info");
             const http = await qwebs.resolve("$http");
-            http.get("/info", "$info", "getInfo");
+            await http.get("/info", "$info", "getInfo");
             await qwebs.load();
             const client = await qwebs.resolve("$client");
             const res = await client.get("http://localhost:3000/info");

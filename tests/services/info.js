@@ -25,41 +25,40 @@ class InfoService {
 		let content = {
 			text: "I'm Info service."
 		};
-
-		context.send(content);
+		context.end(content);
 	};
 
 	getMessage(context) {
 		let content = {
 			text: "hello world"
 		};
-		return response.send({ request: request, content: content });
+		context.end(content);
 	};
 
-	getStream(request, response) {
+	getStream(context) {
+
 		const stream = Readable({objectMode: true}); 
+		stream.pipe(context);
+
 		stream._read = () => {};                     
 		stream.push({ id: 1 });
     	stream.push({ id: 2 });
         stream.push(null);
-
-		return response.send({ request: request, stream: stream });
 	};
 
-	getStreamWithTimeout(request, response) {
+	getStreamWithTimeout(context) {
 		const stream = Readable({objectMode: true}); 
-		stream._read = () => {};                     
+		stream.pipe(context);
 
+		stream._read = () => {};                     
 		setTimeout(() => {
 			stream.push({ id: 1 });
 			stream.push({ id: 2 });
 			stream.push(null);
-		}, 1000);
-		
-		return response.send({ request: request, stream: stream });
+		}, 4000);
 	};
 
-	getStreamWithString(request, response) {
+	getStreamWithString(context) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};                     
 		stream.push("{ id: 1 }");
@@ -69,7 +68,7 @@ class InfoService {
 		return response.send({ request: request, stream: stream });
 	};
 
-	getStreamMultipleTypes(request, response) {
+	getStreamMultipleTypes(context) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};                     
 		stream.push("{ id: 1 }");
@@ -80,7 +79,7 @@ class InfoService {
 		return response.send({ request: request, stream: stream });
 	};
 
-	getStreamError(request, response) {
+	getStreamError(context) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};                     
 		stream.push({ id: 1 });
@@ -91,7 +90,7 @@ class InfoService {
 		return response.send({ request: request, stream: stream });
 	};
 
-	getStreamErrorAfterSending(request, response) {
+	getStreamErrorAfterSending(context) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};                     
 		
@@ -109,21 +108,21 @@ class InfoService {
 		return response.send({ request: request, stream: stream });
 	};
 	
-	save(request, response) {
+	save(context) {
 		let content = {
 			status: "saved"
 		};
 		return response.send({ request: request, content: content });
 	};
 	
-	update(request, response) {
+	update(context) {
 		let content = {
 			status: "updated"
 		};
 		return response.send({ request: request, content: content });
 	};
 	
-	delete(request, response) {
+	delete(context) {
 		let content = {
 			status: "deleted"
 		};

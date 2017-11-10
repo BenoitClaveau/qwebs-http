@@ -24,9 +24,9 @@ require("process").on('unhandledRejection', (reason, p) => {
     console.error('Unhandled Rejection at:', p, 'reason:', reason);
 });
 
-describe("reponse", () => {
+describe("context", () => {
 
-    it("response", async done => {
+    xit("json object", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
@@ -39,109 +39,156 @@ describe("reponse", () => {
         expect(res.body.text).to.be("I'm Info service.");
     });
 
-    xit("JSON string", () => {
-        let server = http.createServer((request, response) => {
-            response.writeHead(200, {'Content-Type': 'application/json'});
-            response.end('{ "id": 3 }');
-        }).listen(1339, () => {
-            request({ method: 'GET', uri: 'http://localhost:1339', json: true }, (error, response, body) => {
-                server.close()
-                expect(error).to.be(null);
-                expect(body.id).to.be(3);
-            });
-        });
+    xit("json stream", async () => {
+        let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
+        const http = await qwebs.resolve("$http");
+        await http.get("/stream", "$info", "getStream");
+        await qwebs.load();
+        const client = await qwebs.resolve("$client");
+        const res = await client.get({ url: "http://localhost:3000/stream", json: true });
+        expect(res.statusCode).to.be(200);
+        expect(res.body.text).to.be("I'm Info service.");
+    }, 10000);
+
+    it("json long stream", async () => {
+        let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
+        const http = await qwebs.resolve("$http");
+        await http.get("/stream", "$info", "getStreamWithTimeout");
+        await qwebs.load();
+        const client = await qwebs.resolve("$client");
+        const res = await client.get({ url: "http://localhost:3000/stream", json: true });
+        expect(res.statusCode).to.be(200);
+        expect(res.body.length).to.be(2);
+        expect(res.body[0].id).to.be(1);
+        expect(res.body[1].id).to.be(1);
+    }, 10000);
+
+    xit("404", async () => {
+        let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
+        const http = await qwebs.resolve("$http");
+        await http.get("/info", "$info", "getInfo");
+        await qwebs.load();
+        const client = await qwebs.resolve("$client");
+        try {
+            await client.get({ url: "http://localhost:3000/info2", json: true });
+            throw new Error("Unexpected.")
+        }
+        catch(error) {
+            expect(error.statusCode).to.be(404);
+        }
     });
 
-    xit("JSON stream", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: {}});
-        const json = await qwebs.resolve("$json-stream");
 
-        let server = http.createServer((request, response) => {
-            const stream = new FromArray([{ label: 1}, { label: 2}, { label: 3}, { label: 4}]);
-            stream.pipe(json.stringify).pipe(response);
-        }).listen(1340, () => {
-            request({ method: 'GET', uri: 'http://localhost:1340', json: true }, (error, response, body) => {
-                server.close()
-                expect(error).to.be(null);
-                expect(body.length).to.be(4);
-            });
-        });
-    });
 
-    xit("Context stream", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: {}});
-        qwebs.inject("Context", "../../lib/services/context", { instanciate: false });
-        const Context = await qwebs.resolve("Context");    
+    // xit("JSON string", () => {
+    //     let server = http.createServer((request, response) => {
+    //         response.writeHead(200, {'Content-Type': 'application/json'});
+    //         response.end('{ "id": 3 }');
+    //     }).listen(1339, () => {
+    //         request({ method: 'GET', uri: 'http://localhost:1339', json: true }, (error, response, body) => {
+    //             server.close()
+    //             expect(error).to.be(null);
+    //             expect(body.id).to.be(3);
+    //         });
+    //     });
+    // });
+
+    // xit("JSON stream", async () => {
+    //     let qwebs = new Qwebs({ dirname: __dirname, config: {}});
+    //     const json = await qwebs.resolve("$json-stream");
+
+    //     let server = http.createServer((request, response) => {
+    //         const stream = new FromArray([{ label: 1}, { label: 2}, { label: 3}, { label: 4}]);
+    //         stream.pipe(json.stringify).pipe(response);
+    //     }).listen(1340, () => {
+    //         request({ method: 'GET', uri: 'http://localhost:1340', json: true }, (error, response, body) => {
+    //             server.close()
+    //             expect(error).to.be(null);
+    //             expect(body.length).to.be(4);
+    //         });
+    //     });
+    // });
+
+    // xit("Context stream", async () => {
+    //     let qwebs = new Qwebs({ dirname: __dirname, config: {}});
+    //     qwebs.inject("Context", "../../lib/services/context", { instanciate: false });
+    //     const Context = await qwebs.resolve("Context");    
         
-        let server = http.createServer(async (request, response) => {
-            const stream = new FromArray([{ label: 1}, { label: 2}, { label: 3}, { label: 1}]);
-            const context = new Context(request, response, qwebs);
-            await context.mount();
-            stream.pipe(context.toJSON);
-        }).listen(1341, () => {
-            request({ method: 'GET', uri: 'http://localhost:1341', json: true }, (error, response, body) => {
-                server.close()
-                expect(error).to.be(null);
-                expect(body.length).to.be(4);
-            });
-        });
-    });
+    //     let server = http.createServer(async (request, response) => {
+    //         const stream = new FromArray([{ label: 1}, { label: 2}, { label: 3}, { label: 1}]);
+    //         const context = new Context(request, response, qwebs);
+    //         await context.mount();
+    //         stream.pipe(context.toJSON);
+    //     }).listen(1341, () => {
+    //         request({ method: 'GET', uri: 'http://localhost:1341', json: true }, (error, response, body) => {
+    //             server.close()
+    //             expect(error).to.be(null);
+    //             expect(body.length).to.be(4);
+    //         });
+    //     });
+    // });
 
-    xit("Context stream with domain", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: {}});
-        qwebs.inject("Context", "../../lib/services/context", { instanciate: false });
-        const Context = await qwebs.resolve("Context");    
+    // xit("Context stream with domain", async () => {
+    //     let qwebs = new Qwebs({ dirname: __dirname, config: {}});
+    //     qwebs.inject("Context", "../../lib/services/context", { instanciate: false });
+    //     const Context = await qwebs.resolve("Context");    
         
-        let server = http.createServer(async (request, response) => {
-            const stream = new FromArray([{ label: "info"}, { label: "prog"}, { label: "description"}, { label: "date"}]);
-            const context = new Context(request, response, qwebs);
-            await context.mount();
+    //     let server = http.createServer(async (request, response) => {
+    //         const stream = new FromArray([{ label: "info"}, { label: "prog"}, { label: "description"}, { label: "date"}]);
+    //         const context = new Context(request, response, qwebs);
+    //         await context.mount();
 
-            const d = domain.create();
-            d.add(request)
-            d.add(response)
+    //         const d = domain.create();
+    //         d.add(request)
+    //         d.add(response)
             
-            d.on('error', error => {
-                console.error('Error', error, request.url);
-                try {
-                    if (response.headersSent) {
-                        response.addTrailers({ "error": "Error occurred, sorry." });
-                        response.end();
+    //         d.on('error', error => {
+    //             console.error('Error', error, request.url);
+    //             try {
+    //                 if (response.headersSent) {
+    //                     response.addTrailers({ "error": "Error occurred, sorry." });
+    //                     response.end();
                         
-                    }
-                    else {
-                        response.writeHead(500);
-                        response.end('Error occurred, sorry.');
-                    }
-                } catch (error2) {
-                    console.error('Error sending 500', error2, request.url);
-                }
-            })
+    //                 }
+    //                 else {
+    //                     response.writeHead(500);
+    //                     response.end('Error occurred, sorry.');
+    //                 }
+    //             } catch (error2) {
+    //                 console.error('Error sending 500', error2, request.url);
+    //             }
+    //         })
 
-            d.run(() => {
-                const upper = new ToUpper();
-                stream.pipe(upper).pipe(context.toJSON);
-            });
+    //         d.run(() => {
+    //             const upper = new ToUpper();
+    //             stream.pipe(upper).pipe(context.toJSON);
+    //         });
 
-        }).listen(1341, () => {
-            request({ method: 'GET', uri: 'http://localhost:1341', json: true }, (error, response, body) => {
-                server.close()
-                expect(error).to.be(null);
-                expect(response.statusCode).to.be(200);
-                expect(body.length).to.be(4);
-            }).on('data', function(data) {
-                console.log('> RECEIVE chunk:', data.toString());
-            })
-            .on('response', function(response) {
-                response.on('end', function(data) {
-                    console.log("> RECEIVE end")
-                    //console.log('received', data.length, 'bytes of data', data.toString());
-                }).on('error', function(error) {
-                    console.error("> RECEIVE error", error);
-                });
-            })
-        });
-    });
+    //     }).listen(1341, () => {
+    //         request({ method: 'GET', uri: 'http://localhost:1341', json: true }, (error, response, body) => {
+    //             server.close()
+    //             expect(error).to.be(null);
+    //             expect(response.statusCode).to.be(200);
+    //             expect(body.length).to.be(4);
+    //         }).on('data', function(data) {
+    //             console.log('> RECEIVE chunk:', data.toString());
+    //         })
+    //         .on('response', function(response) {
+    //             response.on('end', function(data) {
+    //                 console.log("> RECEIVE end")
+    //                 //console.log('received', data.length, 'bytes of data', data.toString());
+    //             }).on('error', function(error) {
+    //                 console.error("> RECEIVE error", error);
+    //             });
+    //         })
+    //     });
+    // });
 
 });
 

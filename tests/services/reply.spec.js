@@ -73,16 +73,16 @@ describe("reponse", () => {
         });
     });
 
-    xit("Reply stream", async () => {
+    xit("Context stream", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: {}});
-        qwebs.inject("Reply", "../../lib/services/reply", { instanciate: false });
-        const Reply = await qwebs.resolve("Reply");    
+        qwebs.inject("Context", "../../lib/services/context", { instanciate: false });
+        const Context = await qwebs.resolve("Context");    
         
         let server = http.createServer(async (request, response) => {
             const stream = new FromArray([{ label: 1}, { label: 2}, { label: 3}, { label: 1}]);
-            const reply = new Reply(request, response, qwebs);
-            await reply.mount();
-            stream.pipe(reply.toJSON);
+            const context = new Context(request, response, qwebs);
+            await context.mount();
+            stream.pipe(context.toJSON);
         }).listen(1341, () => {
             request({ method: 'GET', uri: 'http://localhost:1341', json: true }, (error, response, body) => {
                 server.close()
@@ -92,15 +92,15 @@ describe("reponse", () => {
         });
     });
 
-    xit("Reply stream with domain", async () => {
+    xit("Context stream with domain", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: {}});
-        qwebs.inject("Reply", "../../lib/services/reply", { instanciate: false });
-        const Reply = await qwebs.resolve("Reply");    
+        qwebs.inject("Context", "../../lib/services/context", { instanciate: false });
+        const Context = await qwebs.resolve("Context");    
         
         let server = http.createServer(async (request, response) => {
             const stream = new FromArray([{ label: "info"}, { label: "prog"}, { label: "description"}, { label: "date"}]);
-            const reply = new Reply(request, response, qwebs);
-            await reply.mount();
+            const context = new Context(request, response, qwebs);
+            await context.mount();
 
             const d = domain.create();
             d.add(request)
@@ -125,7 +125,7 @@ describe("reponse", () => {
 
             d.run(() => {
                 const upper = new ToUpper();
-                stream.pipe(upper).pipe(reply.toJSON);
+                stream.pipe(upper).pipe(context.toJSON);
             });
 
         }).listen(1341, () => {

@@ -21,17 +21,17 @@ class InfoService {
 		return "Hello world.";
 	};
 
-	getInfo(reply) {
+	getInfo(context) {
 		let content = {
 			text: "I'm Info service."
 		};
 
-		reply.json.write(content);
+		context.json.write(content);
 
 		//return response.send({ request: request, content: content });
 	};
 
-	getMessage(request, response) {
+	getMessage(context) {
 		let content = {
 			text: "hello world"
 		};

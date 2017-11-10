@@ -26,9 +26,7 @@ class InfoService {
 			text: "I'm Info service."
 		};
 
-		context.json.write(content);
-
-		//return response.send({ request: request, content: content });
+		context.send(content);
 	};
 
 	getMessage(context) {

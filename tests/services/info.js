@@ -25,7 +25,7 @@ class InfoService {
 		let content = {
 			text: "I'm Info service."
 		};
-		context.end(content);
+		context.json.end(content);
 	};
 
 	getMessage(context) {
@@ -38,7 +38,7 @@ class InfoService {
 	getStream(context) {
 
 		const stream = Readable({objectMode: true}); 
-		stream.pipe(context);
+		stream.pipe(context.json);
 
 		stream._read = () => {};                     
 		stream.push({ id: 1 });

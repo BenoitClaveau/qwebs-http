@@ -4,21 +4,25 @@
   "description": "Http/https server for Qwebs",
   "main": "index.js",
   "dependencies": {
+    "chalk": "^2.3.0",
     "clean-css": "latest",
     "html-compress": "latest",
     "isitforme": "latest",
     "multiparty": "latest",
     "oups": "latest",
     "qwebs": "^1.0.0-beta.3",
+    "reflect-metadata": "^0.1.10",
     "sass.js": "latest",
     "uglify-js": "latest",
     "uuid": "^3.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.32",
+    "@babel/plugin-syntax-decorators": "^7.0.0-beta.32",
     "coveralls": "latest",
+    "expect.js": "latest",
     "istanbul": "latest",
-    "mocha": "latest",
-    "expect.js": "latest"
+    "mocha": "latest"
   },
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha tests",

@@ -9,6 +9,8 @@
 const Writable = require('stream').Writable;
 const Readable = require('stream').Readable;
 
+function Type(type) { return Reflect.metadata("design:type", type); }
+
 class InfoService {
 	constructor() {	
 	};
@@ -25,7 +27,7 @@ class InfoService {
 		let content = {
 			text: "I'm Info service."
 		};
-		context.json.end(content);
+		context.end(content);
 	};
 
 	getMessage(context) {
@@ -38,7 +40,7 @@ class InfoService {
 	getStream(context) {
 
 		const stream = Readable({objectMode: true}); 
-		stream.pipe(context.json);
+		stream.pipe(context);
 
 		stream._read = () => {};                     
 		stream.push({ id: 1 });

@@ -26,7 +26,9 @@ require("process").on('unhandledRejection', (reason, p) => {
 
 describe("reply", () => {
 
-    xit("json object", async () => {
+    
+
+    it("json object", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
@@ -52,7 +54,7 @@ describe("reply", () => {
         expect(res.body.text).to.be("I'm Info service.");
     }, 10000);
 
-    it("json long stream", async () => {
+    xit("json long stream", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");

@@ -8,8 +8,7 @@
 
 const Writable = require('stream').Writable;
 const Readable = require('stream').Readable;
-
-function Type(type) { return Reflect.metadata("design:type", type); }
+const fs =  require('fs');
 
 class InfoService {
 	constructor() {	
@@ -30,11 +29,8 @@ class InfoService {
 		reply.send(content);
 	};
 
-	getMessage(reply) {
-		let content = {
-			text: "hello world"
-		};
-		reply.send(content);
+	getFile(reply) {
+		reply.pipe(fs.createReadStream(`${__dirname}/info.js`));
 	};
 
 	getStream(reply) {
@@ -114,21 +110,21 @@ class InfoService {
 		let content = {
 			status: "saved"
 		};
-		return response.send({ request: request, content: content });
+		reply.send(content);
 	};
 	
 	update(reply) {
 		let content = {
 			status: "updated"
 		};
-		return response.send({ request: request, content: content });
+		reply.send(content);
 	};
 	
 	delete(reply) {
 		let content = {
 			status: "deleted"
 		};
-		return response.send({ request: request, content: content });
+		reply.send(content);
 	};
 };
 

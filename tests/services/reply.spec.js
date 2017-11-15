@@ -18,6 +18,7 @@ const Qwebs = require("qwebs");
 const { FromArray } = require("qwebs");
 const http = require("http");
 const request = require('request');
+const fs =  require('fs');
 const domain =  require('domain');
 
 require("process").on('unhandledRejection', (reason, p) => {
@@ -26,7 +27,24 @@ require("process").on('unhandledRejection', (reason, p) => {
 
 describe("reply", () => {
 
-    xit("json object", async () => {
+    it("404", async () => {
+        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 2999 }}});
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
+        const http = await qwebs.resolve("$http");
+        await http.get("/info", "$info", "getInfo");
+        await qwebs.load();
+        const client = await qwebs.resolve("$client");
+        try {
+            await client.get({ url: "http://localhost:2999/info2", json: true });
+            throw new Error("Unexpected.")
+        }
+        catch(error) {
+            expect(error.statusCode).to.be(404);
+        }
+    });
+
+    it("json object", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
@@ -69,22 +87,16 @@ describe("reply", () => {
         expect(res.body.shift().id).to.be(4);
     }, 10000);
 
-    it("404", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
+    it("file", async () => {
+        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3003 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         const http = await qwebs.resolve("$http");
-        await http.get("/info", "$info", "getInfo");
+        await http.get("/file", "$info", "getFile");
         await qwebs.load();
-        const client = await qwebs.resolve("$client");
-        try {
-            await client.get({ url: "http://localhost:3000/info2", json: true });
-            throw new Error("Unexpected.")
-        }
-        catch(error) {
-            expect(error.statusCode).to.be(404);
-        }
-    });
+        request.get({ url: "http://localhost:3003/file" }).pipe(fs.createWriteStream(`${__dirname}/../data/file.js`));
+
+    }, 10000);
 
 
 

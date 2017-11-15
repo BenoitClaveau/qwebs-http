@@ -26,8 +26,6 @@ require("process").on('unhandledRejection', (reason, p) => {
 
 describe("reply", () => {
 
-    
-
     it("json object", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
         qwebs.inject("$http", "../../index");

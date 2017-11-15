@@ -87,7 +87,7 @@ describe("reply", () => {
         expect(res.body.shift().id).to.be(4);
     }, 10000);
 
-    it("file", async () => {
+    xit("file", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3003 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");

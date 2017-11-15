@@ -30,7 +30,13 @@ class InfoService {
 	};
 
 	getFile(reply) {
-		reply.pipe(fs.createReadStream(`${__dirname}/info.js`));
+		reply.contentType = "text/plain";
+		fs.createReadStream(`${__dirname}/../data/npm.array.json`).pipe(reply);
+	};
+
+	getArray(reply) {
+		reply.contentType = "application/json";
+		fs.createReadStream(`${__dirname}/../data/npm.array.json`).pipe(reply);
 	};
 
 	getStream(reply) {

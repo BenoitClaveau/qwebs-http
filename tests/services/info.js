@@ -9,6 +9,7 @@
 const Writable = require('stream').Writable;
 const Readable = require('stream').Readable;
 const fs =  require('fs');
+const JSONStream = require("JSONStream");
 
 class InfoService {
 	constructor() {	
@@ -36,7 +37,9 @@ class InfoService {
 
 	getArray(reply) {
 		reply.contentType = "application/json";
-		fs.createReadStream(`${__dirname}/../data/npm.array.json`).pipe(reply);
+		fs.createReadStream(`${__dirname}/../data/npm.array.json`)
+			.pipe(JSONStream.parse('*'))
+			.pipe(reply);
 	};
 
 	getStream(reply) {

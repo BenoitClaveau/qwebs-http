@@ -23,24 +23,24 @@ class InfoService {
 		return "Hello world.";
 	};
 
-	getInfo(context) {
+	getInfo(reply) {
 		let content = {
 			text: "I'm Info service."
 		};
-		context.end(content);
+		reply.end(content);
 	};
 
-	getMessage(context) {
+	getMessage(reply) {
 		let content = {
 			text: "hello world"
 		};
-		context.end(content);
+		reply.end(content);
 	};
 
-	getStream(context) {
+	getStream(reply) {
 
 		const stream = Readable({objectMode: true}); 
-		stream.pipe(context);
+		stream.pipe(reply);
 
 		stream._read = () => {};                     
 		stream.push({ id: 1 });
@@ -48,9 +48,9 @@ class InfoService {
         stream.push(null);
 	};
 
-	getStreamWithTimeout(context) {
+	getStreamWithTimeout(reply) {
 		const stream = Readable({objectMode: true}); 
-		stream.pipe(context);
+		stream.pipe(reply);
 
 		stream._read = () => {};                     
 		setTimeout(() => {
@@ -60,7 +60,7 @@ class InfoService {
 		}, 4000);
 	};
 
-	getStreamWithString(context) {
+	getStreamWithString(reply) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};                     
 		stream.push("{ id: 1 }");
@@ -70,7 +70,7 @@ class InfoService {
 		return response.send({ request: request, stream: stream });
 	};
 
-	getStreamMultipleTypes(context) {
+	getStreamMultipleTypes(reply) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};                     
 		stream.push("{ id: 1 }");
@@ -81,7 +81,7 @@ class InfoService {
 		return response.send({ request: request, stream: stream });
 	};
 
-	getStreamError(context) {
+	getStreamError(reply) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};                     
 		stream.push({ id: 1 });
@@ -92,7 +92,7 @@ class InfoService {
 		return response.send({ request: request, stream: stream });
 	};
 
-	getStreamErrorAfterSending(context) {
+	getStreamErrorAfterSending(reply) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};                     
 		
@@ -110,21 +110,21 @@ class InfoService {
 		return response.send({ request: request, stream: stream });
 	};
 	
-	save(context) {
+	save(reply) {
 		let content = {
 			status: "saved"
 		};
 		return response.send({ request: request, content: content });
 	};
 	
-	update(context) {
+	update(reply) {
 		let content = {
 			status: "updated"
 		};
 		return response.send({ request: request, content: content });
 	};
 	
-	delete(context) {
+	delete(reply) {
 		let content = {
 			status: "deleted"
 		};

@@ -14,25 +14,23 @@ require("process").on('unhandledRejection', (reason, p) => {
 
 describe("ContentType", () => {
 
+    const contentType = new ContentType();
+
     it("get", () => {
-        const contentType = new ContentType();
-        contentType.get(".json").expect("application/json");
-        contentType.get(".png").expect("image/png");
-        contentType.get(".jpg").expect("image/jpg");
-        contentType.get(".gif").expect("image/gif");
-        contentType.get(".svg").expect("image/svg+xml");
-        contentType.get(".js").expect("application/javascript");
-        contentType.get(".html").expect("text/html");
-        contentType.get(".css").expect("text/css");
-        contentType.get(".ico").expect("image/x-icon");
-        contentType.get(".ttf").expect("application/x-font-ttf");
-        contentType.get(".eot").expect("application/vnd.ms-fontobject");
-        contentType.get(".woff").expect("application/font-woff");
-        contentType.get(".appcache").expect("text/cache-manifest");
-        contentType.get(".txt").expect("text/plain");
-        contentType.get(".xml").expect("application/xml");
-        contentType.get(".map").expect("application/json");
-        contentType.get(".md").expect("text/x-markdown");
-        contentType.get(".apk").expect("application/vnd.android.package-archive");
+        expect(contentType.get(".json")).to.be("application/json");
+        expect(contentType.get(".png")).to.be("image/png");
+        expect(contentType.get(".jpg")).to.be("image/jpg");
+        expect(contentType.get(".gif")).to.be("image/gif");
+        expect(contentType.get(".svg")).to.be("image/svg+xml");
+        expect(contentType.get(".js")).to.be("application/javascript");
+        expect(contentType.get(".html")).to.be("text/html");
+        expect(contentType.get(".css")).to.be("text/css");
+        expect(contentType.get(".ico")).to.be("image/x-icon");
+        expect(contentType.get(".ttf")).to.be("application/x-font-ttf");
+        expect(contentType.get(".eot")).to.be("application/vnd.ms-fontobject");
+        expect(contentType.get(".woff")).to.be("application/font-woff");
+        expect(contentType.get(".appcache")).to.be("text/cache-manifest");
+        expect(contentType.get(".map")).to.be("application/json");
+        expect(contentType.get(".md")).to.be("text/x-markdown");
     });
 });

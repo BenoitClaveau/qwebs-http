@@ -24,7 +24,7 @@ require("process").on('unhandledRejection', (reason, p) => {
     console.error('Unhandled Rejection at:', p, 'reason:', reason);
 });
 
-describe("context", () => {
+describe("reply", () => {
 
     xit("json object", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
@@ -115,16 +115,16 @@ describe("context", () => {
     //     });
     // });
 
-    // xit("Context stream", async () => {
+    // xit("Reply stream", async () => {
     //     let qwebs = new Qwebs({ dirname: __dirname, config: {}});
-    //     qwebs.inject("Context", "../../lib/services/context", { instanciate: false });
-    //     const Context = await qwebs.resolve("Context");    
+    //     qwebs.inject("Reply", "../../lib/services/reply", { instanciate: false });
+    //     const Reply = await qwebs.resolve("Reply");    
         
     //     let server = http.createServer(async (request, response) => {
     //         const stream = new FromArray([{ label: 1}, { label: 2}, { label: 3}, { label: 1}]);
-    //         const context = new Context(request, response, qwebs);
-    //         await context.mount();
-    //         stream.pipe(context.toJSON);
+    //         const reply = new Reply(request, response, qwebs);
+    //         await reply.mount();
+    //         stream.pipe(reply.toJSON);
     //     }).listen(1341, () => {
     //         request({ method: 'GET', uri: 'http://localhost:1341', json: true }, (error, response, body) => {
     //             server.close()
@@ -134,15 +134,15 @@ describe("context", () => {
     //     });
     // });
 
-    // xit("Context stream with domain", async () => {
+    // xit("Reply stream with domain", async () => {
     //     let qwebs = new Qwebs({ dirname: __dirname, config: {}});
-    //     qwebs.inject("Context", "../../lib/services/context", { instanciate: false });
-    //     const Context = await qwebs.resolve("Context");    
+    //     qwebs.inject("Reply", "../../lib/services/reply", { instanciate: false });
+    //     const Reply = await qwebs.resolve("Reply");    
         
     //     let server = http.createServer(async (request, response) => {
     //         const stream = new FromArray([{ label: "info"}, { label: "prog"}, { label: "description"}, { label: "date"}]);
-    //         const context = new Context(request, response, qwebs);
-    //         await context.mount();
+    //         const reply = new Reply(request, response, qwebs);
+    //         await reply.mount();
 
     //         const d = domain.create();
     //         d.add(request)
@@ -167,7 +167,7 @@ describe("context", () => {
 
     //         d.run(() => {
     //             const upper = new ToUpper();
-    //             stream.pipe(upper).pipe(context.toJSON);
+    //             stream.pipe(upper).pipe(reply.toJSON);
     //         });
 
     //     }).listen(1341, () => {

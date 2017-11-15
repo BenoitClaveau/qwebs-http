@@ -27,14 +27,14 @@ class InfoService {
 		let content = {
 			text: "I'm Info service."
 		};
-		reply.end(content);
+		reply.send(content);
 	};
 
 	getMessage(reply) {
 		let content = {
 			text: "hello world"
 		};
-		reply.end(content);
+		reply.send(content);
 	};
 
 	getStream(reply) {
@@ -54,8 +54,8 @@ class InfoService {
 
 		stream._read = () => {};                     
 		setTimeout(() => {
-			stream.push({ id: 1 });
-			stream.push({ id: 2 });
+			stream.push({ id: 3 });
+			stream.push({ id: 4 });
 			stream.push(null);
 		}, 4000);
 	};

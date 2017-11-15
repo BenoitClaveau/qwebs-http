@@ -26,8 +26,8 @@ require("process").on('unhandledRejection', (reason, p) => {
 
 describe("reply", () => {
 
-    it("json object", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
+    xit("json object", async () => {
+        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         const http = await qwebs.resolve("$http");
@@ -39,35 +39,37 @@ describe("reply", () => {
         expect(res.body.text).to.be("I'm Info service.");
     });
 
-    xit("json stream", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
+    it("json stream", async () => {
+        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3001 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         const http = await qwebs.resolve("$http");
         await http.get("/stream", "$info", "getStream");
         await qwebs.load();
         const client = await qwebs.resolve("$client");
-        const res = await client.get({ url: "http://localhost:3000/stream", json: true });
+        const res = await client.get({ url: "http://localhost:3001/stream", json: true });
         expect(res.statusCode).to.be(200);
-        expect(res.body.text).to.be("I'm Info service.");
+        expect(res.body.length).to.be(2);
+        expect(res.body.shift().id).to.be(1);
+        expect(res.body.shift().id).to.be(2);
     }, 10000);
 
-    xit("json long stream", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
+    it("json long stream", async () => {
+        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3002 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         const http = await qwebs.resolve("$http");
         await http.get("/stream", "$info", "getStreamWithTimeout");
         await qwebs.load();
         const client = await qwebs.resolve("$client");
-        const res = await client.get({ url: "http://localhost:3000/stream", json: true });
+        const res = await client.get({ url: "http://localhost:3002/stream", json: true });
         expect(res.statusCode).to.be(200);
         expect(res.body.length).to.be(2);
-        expect(res.body[0].id).to.be(1);
-        expect(res.body[1].id).to.be(1);
+        expect(res.body.shift().id).to.be(3);
+        expect(res.body.shift().id).to.be(4);
     }, 10000);
 
-    xit("404", async () => {
+    it("404", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: "../config.json" });
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");

@@ -71,7 +71,7 @@ class InfoService {
     	stream.push("{ id: 2 }");
         stream.push(null);
 
-		return response.send({ request: request, stream: stream });
+		return response.end({ request: request, stream: stream });
 	};
 
 	getStreamMultipleTypes(reply) {
@@ -82,7 +82,7 @@ class InfoService {
 		stream.push(33);
         stream.push(null);
 
-		return response.send({ request: request, stream: stream });
+		return response.end({ request: request, stream: stream });
 	};
 
 	getStreamError(reply) {
@@ -93,7 +93,7 @@ class InfoService {
     	stream.push({ id: 2 });
         stream.push(null);
 
-		return response.send({ request: request, stream: stream });
+		return response.end({ request: request, stream: stream });
 	};
 
 	getStreamErrorAfterSending(reply) {
@@ -111,28 +111,29 @@ class InfoService {
 			}, 500);
 		}, 100)
 
-		return response.send({ request: request, stream: stream });
+		return response.end({ request: request, stream: stream });
 	};
 	
-	save(reply) {
+	save(ask, reply) {
 		let content = {
 			status: "saved"
 		};
-		reply.send(content);
+
+		ask.pipe(reply);
 	};
 	
 	update(reply) {
 		let content = {
 			status: "updated"
 		};
-		reply.send(content);
+		reply.end(content);
 	};
 	
 	delete(reply) {
 		let content = {
 			status: "deleted"
 		};
-		reply.send(content);
+		reply.end(content);
 	};
 };
 

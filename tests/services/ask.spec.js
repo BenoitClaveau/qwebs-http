@@ -28,21 +28,19 @@ require("process").on('unhandledRejection', (reason, p) => {
 
 describe("ask", () => {
 
-    xit("404", async () => {
+    it("post object", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 2999 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         const http = await qwebs.resolve("$http");
-        await http.get("/info", "$info", "getInfo");
+        await http.post("/save", "$info", "save");
         await qwebs.load();
         const client = await qwebs.resolve("$client");
-        try {
-            await client.get({ url: "http://localhost:2999/info2", json: true });
-            throw new Error("Unexpected.")
-        }
-        catch(error) {
-            expect(error.statusCode).to.be(404);
-        }
+        await client.post({ url: "http://localhost:2999/save", json: {
+            type: "object"
+        } }).then(res => {
+            expect(res).to.eql({});
+        });
     });
 
 });

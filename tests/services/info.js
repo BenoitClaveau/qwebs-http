@@ -27,7 +27,7 @@ class InfoService {
 		let content = {
 			text: "I'm Info service."
 		};
-		reply.send(content);
+		reply.end(content);
 	};
 
 	getFile(reply) {
@@ -38,7 +38,6 @@ class InfoService {
 	getArray(reply) {
 		reply.contentType = "application/json";
 		fs.createReadStream(`${__dirname}/../data/npm.array.json`)
-			.pipe(JSONStream.parse('*'))
 			.pipe(reply);
 	};
 

@@ -20,6 +20,7 @@ const http = require("http");
 const request = require('request');
 const fs =  require('fs');
 const domain =  require('domain');
+const JSONStream = require('JSONStream');
 
 require("process").on('unhandledRejection', (reason, p) => {
     console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -107,10 +108,9 @@ describe("reply", () => {
         const http = await qwebs.resolve("$http");
         await http.get("/array", "$info", "getArray");
         await qwebs.load();
-        request.get({ url: "http://localhost:3004/array", json: true }).on("data", chunk => {
-            console.log(chunk.toString())
-        })
-        .pipe(fs.createWriteStream(`${__dirname}/../data/output/file.js`));
+        request.get({ url: "http://localhost:3004/array", json: true })
+            .pipe(fs.createWriteStream(`${__dirname}/../data/output/file.js`));
+
     }, 10000);
 
     // xit("JSON string", () => {

@@ -30,11 +30,12 @@ describe("ask", () => {
 
     it("post object", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 2999 }}});
-        qwebs.inject("$http", "../../index");
-        qwebs.inject("$info", "./info");
+        await qwebs.inject("$http", "../../index");
+        await qwebs.inject("$info", "./info");
+        await qwebs.load();
+        
         const http = await qwebs.resolve("$http");
         await http.post("/save", "$info", "save");
-        await qwebs.load();
         const client = await qwebs.resolve("$client");
         await client.post({ url: "http://localhost:2999/save", json: {
             type: "object"

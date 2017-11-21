@@ -118,7 +118,7 @@ class InfoService {
 		let content = {
 			status: "saved"
 		};
-
+		reply.outputType = "object";
 		ask.pipe(reply);
 	};
 	

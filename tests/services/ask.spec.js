@@ -38,7 +38,8 @@ describe("ask", () => {
         await http.post("/save", "$info", "save");
         const client = await qwebs.resolve("$client");
         await client.post({ url: "http://localhost:2999/save", json: {
-            type: "object"
+            name: "ben",
+            value: 0,
         } }).then(res => {
             expect(res).to.eql({});
         });

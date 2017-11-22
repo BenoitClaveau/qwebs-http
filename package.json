@@ -4,6 +4,7 @@
   "description": "Http/https server for Qwebs",
   "main": "index.js",
   "dependencies": {
+    "busboy": "^0.2.14",
     "chalk": "^2.3.0",
     "clean-css": "latest",
     "html-compress": "latest",

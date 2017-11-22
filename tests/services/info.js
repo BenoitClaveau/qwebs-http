@@ -2,10 +2,7 @@
  * qwebs
  * Copyright(c) 2016 Benoît Claveau <benoit.claveau@gmail.com>
  * MIT Licensed
- */
-
-"use strict";
-
+*/
 const Writable = require('stream').Writable;
 const Readable = require('stream').Readable;
 const fs =  require('fs');
@@ -42,33 +39,40 @@ class InfoService {
 
 	getStream(ask, reply) {
 		const stream = Readable({objectMode: true}); 
+		stream._read = () => {};
 		stream.pipe(reply);
-		//stream._read = () => {};                     
 		stream.push({ id: 1 });
     	stream.push({ id: 2 });
         stream.push(null);
 	};
 
 	saveOne(ask, reply) {
-		let content = {
-			status: "saved"
-		};
 		reply.outputType = "object";
 		ask.pipe(reply);
 	};
 
 	saveMany(ask, reply) {
-		let content = {
-			status: "saved"
-		};
-		
 		ask.pipe(reply);
+	};
+
+	uploadFile(ask, reply) {
+		const stream = Readable({objectMode: true}); 
+		stream._read = () => {};
+		ask.on("file", (filename, file) => {
+			setTimeout(() => {
+				//simulate save file
+				stream.push({ file: filename, status: "saved" })
+				stream.push(null);
+			}, 1);
+		})
+
+		stream.pipe(reply);
 	};
 
 	getStreamWithTimeout(reply) {
 		const stream = Readable({objectMode: true}); 
 		stream.pipe(reply);
-		//stream._read = () => {};                     
+		stream._read = () => {};
 		setTimeout(() => {
 			stream.push({ id: 3 });
 			stream.push({ id: 4 });

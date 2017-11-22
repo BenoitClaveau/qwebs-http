@@ -1,26 +1,16 @@
 /*!
  * qwebs
- * Copyright(c) 2016 Benoît Claveau <benoit.claveau@gmail.com>
+ * Copyright(c) 2017 Benoît Claveau <benoit.claveau@gmail.com>
  * MIT Licensed
  */
 "use strict";
 
-//https://github.com/TypeStrong/typedoc/blob/fa87b1c/src/typings/node/node.d.ts#L186
-
-//EE.listenerCount(dest, 'error')
-
-
-// const EventEmitter = require('events');
-// EventEmitter.usingDomains = true;
-
 const expect = require("expect.js");
 const Qwebs = require("qwebs");
-const { FromArray } = require("qwebs");
 const http = require("http");
 const request = require('request');
 const fs =  require('fs');
-const domain =  require('domain');
-const JSONStream = require('JSONStream');
+const JSONStream =  require('JSONStream');
 
 require("process").on('unhandledRejection', (reason, p) => {
     console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -48,7 +38,7 @@ describe("ask", () => {
         });
     });
 
-    xit("post object -> array", async () => {
+    it("post object -> array", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 2997 }}});
         await qwebs.inject("$http", "../../index");
         await qwebs.inject("$info", "./info");
@@ -62,7 +52,7 @@ describe("ask", () => {
             value: 0,
             test: "454566"
         } }).then(res => {
-            expect(res.body.length).to.be(2);
+            expect(res.body.length).to.be(1);
             expect(res.body[0].name).to.be("ben");
             expect(res.body[0].value).to.be(0);
             expect(res.body[0].test).to.be("454566");
@@ -126,4 +116,63 @@ describe("ask", () => {
             expect(res.body[1].test).to.be("zz");
         });
     });
+
+    it("upload stream", async () => {
+        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000 }}});
+        await qwebs.inject("$http", "../../index");
+        await qwebs.inject("$info", "./info");
+        await qwebs.load();
+        const http = await qwebs.resolve("$http");
+        await http.post("/save", "$info", "saveMany");
+        const jsonstream = await qwebs.resolve("$json-stream");
+
+        let receive = false;
+        let sending = false;
+
+        fs.createReadStream(`${__dirname}/../data/npm.array.json`)
+            .on("data", data => {
+                if (!sending) console.log("FIRST SENDING", new Date())
+                sending = sending || true;
+            })
+            .on("end", () => {
+                console.log("FILE END", new Date())
+            })
+            .pipe(request.post("http://localhost:3000/save"))
+            .pipe(jsonstream.parse())
+            .on("end", data => {
+                console.log("REQUEST END", new Date())
+            })
+            .on("data", data => {
+                if (!receive) console.log("FIRST RECEIVE", new Date())
+                receive = receive || true;
+            })
+    });
+
+    // it("upload stream", async () => {
+    //     let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3002 }}});
+    //     await qwebs.inject("$http", "../../index");
+    //     await qwebs.inject("$info", "./info");
+    //     await qwebs.load();
+    //     const http = await qwebs.resolve("$http");
+    //     await http.post("/save", "$info", "saveMany");
+
+    //     const requestOptions = {
+    //         formData : {
+    //           file : fs.createWriteStream(`${__dirname}/../data/npm.array.json`)
+    //         },
+    //         method : 'POST',
+    //         url    : 'http://localhost:3002/save'
+    //       };
+        
+
+    //     request(requestOptions)
+    //         .on("error", error => {
+    //             console.error(error)
+    //         })
+    //         .on("end", () => {
+    //             console.log("END")
+    //         })
+    // });
+
+    
 });

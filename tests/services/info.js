@@ -23,25 +23,24 @@ class InfoService {
 		return "Hello world.";
 	};
 
-	getInfo(reply) {
+	getInfo(ask, reply) {
 		let content = {
 			text: "I'm Info service."
 		};
 		reply.end(content);
 	};
 
-	getFile(reply) {
+	getFile(ask, reply) {
 		reply.contentType = "text/plain";
 		fs.createReadStream(`${__dirname}/../data/npm.array.json`).pipe(reply);
 	};
 
-	getArray(reply) {
+	getArray(ask, reply) {
 		reply.contentType = "application/json";
-		fs.createReadStream(`${__dirname}/../data/npm.array.json`)
-			.pipe(reply);
+		fs.createReadStream(`${__dirname}/../data/npm.array.json`).pipe(reply);
 	};
 
-	getStream(reply) {
+	getStream(ask, reply) {
 		const stream = Readable({objectMode: true}); 
 		stream.pipe(reply);
 		//stream._read = () => {};                     
@@ -62,6 +61,7 @@ class InfoService {
 		let content = {
 			status: "saved"
 		};
+		
 		ask.pipe(reply);
 	};
 

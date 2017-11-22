@@ -42,21 +42,33 @@ class InfoService {
 	};
 
 	getStream(reply) {
-
 		const stream = Readable({objectMode: true}); 
 		stream.pipe(reply);
-
-		stream._read = () => {};                     
+		//stream._read = () => {};                     
 		stream.push({ id: 1 });
     	stream.push({ id: 2 });
         stream.push(null);
 	};
 
+	saveOne(ask, reply) {
+		let content = {
+			status: "saved"
+		};
+		reply.outputType = "object";
+		ask.pipe(reply);
+	};
+
+	saveMany(ask, reply) {
+		let content = {
+			status: "saved"
+		};
+		ask.pipe(reply);
+	};
+
 	getStreamWithTimeout(reply) {
 		const stream = Readable({objectMode: true}); 
 		stream.pipe(reply);
-
-		stream._read = () => {};                     
+		//stream._read = () => {};                     
 		setTimeout(() => {
 			stream.push({ id: 3 });
 			stream.push({ id: 4 });
@@ -64,6 +76,7 @@ class InfoService {
 		}, 4000);
 	};
 
+	/*
 	getStreamWithString(reply) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};                     
@@ -114,13 +127,7 @@ class InfoService {
 		return response.end({ request: request, stream: stream });
 	};
 	
-	save(ask, reply) {
-		let content = {
-			status: "saved"
-		};
-		reply.outputType = "object";
-		ask.pipe(reply);
-	};
+	
 	
 	update(reply) {
 		let content = {
@@ -135,6 +142,7 @@ class InfoService {
 		};
 		reply.end(content);
 	};
+	*/
 };
 
 class MyReadable extends Readable {

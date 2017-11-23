@@ -66,27 +66,20 @@ class InfoService {
 		ask.pipe(reply);
 	};
 
-	uploadFile(ask, reply) {
+	saveFile(ask, reply) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};
 		stream.pipe(reply);
 
 		ask.on("file", (fieldname, file, filename, encoding, mimetype) => {
-			const output = fs.createWriteStream(`${__dirname}/../data/output.${filename}`);
-			file.pipe(output).on("end", () => {
-				stream.push({ file: filename, status: "saved" })
+			const filepath = `${__dirname}/../data/output/${filename}`;
+			if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
+
+			const output = fs.createWriteStream(filepath);
+			file.pipe(output).on("finish", () => {
+				stream.push({ filepath: filepath })
 				stream.push(null);
 			})
-			
-			// file.on('data', function(data) {
-			// 	console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
-			// });
-			// file.on('end', function() {
-			// 	console.log('File [' + fieldname + '] Finished');
-			// 	stream.push({ file: filename, status: "saved" })
-			// 	stream.push(null);
-			// });
-			
 		})
 	};
 

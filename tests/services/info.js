@@ -46,6 +46,17 @@ class InfoService {
         stream.push(null);
 	};
 
+	getStreamWithTimeout(ask, reply) {
+		const stream = Readable({objectMode: true}); 
+		stream._read = () => {};
+		stream.pipe(reply);
+		setTimeout(() => {
+			stream.push({ id: 3 });
+			stream.push({ id: 4 });
+			stream.push(null);
+		}, 100);
+	};
+
 	saveOne(ask, reply) {
 		reply.outputType = "object";
 		ask.pipe(reply);
@@ -58,27 +69,35 @@ class InfoService {
 	uploadFile(ask, reply) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};
-		ask.on("file", (filename, file) => {
-			setTimeout(() => {
-				//simulate save file
-				reply.write({ file: filename, status: "saved" })
-				reply.write({ file: filename, status: "saved2" })
-				reply.end();
-			}, 1);
-		})
+		stream.pipe(reply);
 
-		//stream.pipe(reply);
+		ask.on("file", (fieldname, file, filename, encoding, mimetype) => {
+			const output = fs.createWriteStream(`${__dirname}/../data/output.${filename}`);
+			file.pipe(output).on("end", () => {
+				stream.push({ file: filename, status: "saved" })
+				stream.push(null);
+			})
+			
+			// file.on('data', function(data) {
+			// 	console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
+			// });
+			// file.on('end', function() {
+			// 	console.log('File [' + fieldname + '] Finished');
+			// 	stream.push({ file: filename, status: "saved" })
+			// 	stream.push(null);
+			// });
+			
+		})
 	};
 
-	getStreamWithTimeout(ask, reply) {
+	uploadImage(ask, reply) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};
 		stream.pipe(reply);
-		setTimeout(() => {
-			stream.push({ id: 3 });
-			stream.push({ id: 4 });
-			stream.push(null);
-		}, 100);
+
+		ask.on("file", (fieldname, file, filename, encoding, mimetype) => {
+			file.pipe(reply);
+		})
 	};
 
 	/*

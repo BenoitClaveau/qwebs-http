@@ -179,7 +179,7 @@ describe("ask", () => {
     //         })
     // });
 
-    it("upload stream", async () => {
+    it("upload json stream", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3002 }}});
         await qwebs.inject("$http", "../../index");
         await qwebs.inject("$info", "./info");
@@ -195,17 +195,36 @@ describe("ask", () => {
             url    : 'http://localhost:3002/upload'
           };
         
+        request(requestOptions).on("data", chunk => {
+            console.log(chunk)
+        }).on("response", response => {
+            console.log(response.headers)
+        });
+    });
 
-        request(requestOptions)
-            .on("data", data => {
-                console.log(data)
-            })
-            .on("error", error => {
-                console.error(error)
-            })
-            .on("end", () => {
-                console.log("END")
-            })
+    xit("upload image stream", async () => {
+        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3002 }}});
+        await qwebs.inject("$http", "../../index");
+        await qwebs.inject("$info", "./info");
+        await qwebs.load();
+        const http = await qwebs.resolve("$http");
+        await http.post("/upload", "$info", "uploadImage");
+
+        const requestOptions = {
+            formData : {
+              file : fs.createReadStream(`${__dirname}/../data/world.png`)
+            },
+            method : 'POST',
+            url    : 'http://localhost:3002/upload'
+          };
+        
+        
+        const output = fs.createWriteStream(`${__dirname}/../data/output.test.png`);
+        request(requestOptions).on("data", chunk => {
+            console.log(chunk)
+        }).on("response", response => {
+            console.log(response.headers)
+        }).pipe(output);
     });
 
     

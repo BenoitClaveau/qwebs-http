@@ -61,23 +61,24 @@ class InfoService {
 		ask.on("file", (filename, file) => {
 			setTimeout(() => {
 				//simulate save file
-				stream.push({ file: filename, status: "saved" })
-				stream.push(null);
+				reply.write({ file: filename, status: "saved" })
+				reply.write({ file: filename, status: "saved2" })
+				reply.end();
 			}, 1);
 		})
 
-		stream.pipe(reply);
+		//stream.pipe(reply);
 	};
 
-	getStreamWithTimeout(reply) {
+	getStreamWithTimeout(ask, reply) {
 		const stream = Readable({objectMode: true}); 
-		stream.pipe(reply);
 		stream._read = () => {};
+		stream.pipe(reply);
 		setTimeout(() => {
 			stream.push({ id: 3 });
 			stream.push({ id: 4 });
 			stream.push(null);
-		}, 4000);
+		}, 100);
 	};
 
 	/*

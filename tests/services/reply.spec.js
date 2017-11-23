@@ -28,7 +28,7 @@ require("process").on('unhandledRejection', (reason, p) => {
 
 describe("reply", () => {
 
-    xit("404", async () => {
+    it("404", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 2999 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
@@ -45,7 +45,7 @@ describe("reply", () => {
         }
     });
 
-    xit("json object", async () => {
+    it("json object", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
@@ -58,7 +58,7 @@ describe("reply", () => {
         expect(res.body.text).to.be("I'm Info service.");
     });
 
-    xit("json stream", async () => {
+    it("json stream", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3001 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
@@ -71,9 +71,9 @@ describe("reply", () => {
         expect(res.body.length).to.be(2);
         expect(res.body.shift().id).to.be(1);
         expect(res.body.shift().id).to.be(2);
-    }, 10000);
+    });
 
-    xit("json long stream", async () => {
+    it("json long stream", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3002 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
@@ -86,9 +86,9 @@ describe("reply", () => {
         expect(res.body.length).to.be(2);
         expect(res.body.shift().id).to.be(3);
         expect(res.body.shift().id).to.be(4);
-    }, 10000);
+    }).timeout(10000);
 
-    xit("file", async () => {
+    it("file", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3003 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
@@ -99,7 +99,7 @@ describe("reply", () => {
             //console.log(chunk.toString())
         })
         .pipe(fs.createWriteStream(`${__dirname}/../data/output/file.js`));
-    }, 10000);
+    });
 
     it("array", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3004 }}});
@@ -109,11 +109,11 @@ describe("reply", () => {
         await http.get("/array", "$info", "getArray");
         await qwebs.load();
         request.get({ url: "http://localhost:3004/array", json: true }).on("data", chunk => {
-                console.log(chunk.toString())
+                //console.log(chunk.toString())
             })
             .pipe(fs.createWriteStream(`${__dirname}/../data/output/file.js`));
 
-    }, 10000);
+    });
 
     // xit("JSON string", () => {
     //     let server = http.createServer((request, response) => {

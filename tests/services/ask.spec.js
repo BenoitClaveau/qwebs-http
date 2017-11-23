@@ -270,7 +270,7 @@ describe("ask", () => {
             expect(response.headers["content-type"]).to.be("image/png");
         }).pipe(output).on("finish", () => {
             expect(fs.existsSync(filepath)).to.be(true);
-        })
+        });
     });
 
     

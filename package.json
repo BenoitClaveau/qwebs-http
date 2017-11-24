@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "busboy": "latest",
-    "chalk": "latesr",
+    "chalk": "latest",
     "file-type": "latest",
     "isitforme": "latest",
     "oups": "latest",

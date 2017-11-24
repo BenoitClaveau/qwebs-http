@@ -1,30 +1,23 @@
 /*!
  * qwebs
- * Copyright(c) 2016 Benoît Claveau <benoit.claveau@gmail.com>
+ * Copyright(c) 2017 Benoît Claveau <benoit.claveau@gmail.com>
  * MIT Licensed
  */
 "use strict";
 
+const expect = require("expect.js");
 const Qwebs = require("qwebs");
-const AssetsLoader = require("../../lib/loaders/assets");
-
+const process =  require("process");
 process.on("unhandledRejection", (reason, p) => {
     console.error("Unhandled Rejection at:", p, "reason:", reason);
 });
 
-describe("assetsLoader", () => {
+describe("Assets loader", () => {
 
-    it("load", done => {
-        return Promise.resolve().then(() => {
-            let $qwebs = new Qwebs({ dirname: __dirname, config: { folder: "public" }});
-            let $config = $qwebs.resolve("$config");
-            let $router = $qwebs.resolve("$router");
-            
-            return new AssetsLoader($qwebs, $config, $router).load().then(assets => {
-                expect(assets.length).toEqual(2);            
-                expect(assets[0].route).toEqual("/assets/user.svg");
-                expect(assets[1].route).toEqual("/main.html");
-            });
-        }).catch(fail).then(done);
+    it("assets", async done => {
+        let qwebs = new Qwebs({ dirname: __dirname });
+        await qwebs.load();
+        const isitasset = await qwebs.resolve("$isitasset");
+        expect(isitasset.routers.length).to.be(2);
     });
-});
+})

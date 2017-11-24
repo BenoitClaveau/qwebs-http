@@ -1,13 +1,19 @@
 /*!
  * qwebs
- * Copyright(c) 2016 Benoît Claveau <benoit.claveau@gmail.com>
+ * Copyright(c) 2017 Benoît Claveau <benoit.claveau@gmail.com>
  * MIT Licensed
  */
 "use strict";
 
 const expect = require("expect.js");
+const Qwebs = require("qwebs");
+const process =  require("process");
 
-describe("router", () => {
+process.on("unhandledRejection", (reason, p) => {
+    console.error("Unhandled Rejection at:", p, "reason:", reason);
+});
+
+describe("router-http", () => {
     
     it("single route", async done => {
         let qwebs = new Qwebs({ dirname: __dirname, config: {}});

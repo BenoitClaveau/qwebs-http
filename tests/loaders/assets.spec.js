@@ -8,6 +8,10 @@
 const Qwebs = require("qwebs");
 const AssetsLoader = require("../../lib/loaders/assets");
 
+process.on("unhandledRejection", (reason, p) => {
+    console.error("Unhandled Rejection at:", p, "reason:", reason);
+});
+
 describe("assetsLoader", () => {
 
     it("load", done => {

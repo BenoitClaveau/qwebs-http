@@ -1,6 +1,6 @@
 {
   "name": "qwebs-http",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "Http/https server for Qwebs",
   "main": "index.js",
   "dependencies": {
@@ -10,7 +10,6 @@
     "isitforme": "latest",
     "oups": "latest",
     "qwebs": "^1.0.0-beta.3",
-    "through2": "latest",
     "uuid": "latest",
     "vinyl": "latest"
   },

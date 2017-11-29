@@ -14,7 +14,7 @@ process.on("unhandledRejection", (reason, p) => {
 
 describe("Assets loader", () => {
 
-    it("assets", async done => {
+    it("assets", async () => {
         let qwebs = new Qwebs({ dirname: __dirname });
         await qwebs.load();
         const isitasset = await qwebs.resolve("$isitasset");
@@ -22,5 +22,6 @@ describe("Assets loader", () => {
         expect(isitasset.nodes[0].token).to.be("main.html");
         expect(isitasset.nodes[1].token).to.be("assets");
         expect(isitasset.nodes[1].nodes[0].token).to.be("user.svg");
+        await qwebs.unload();
     });
 })

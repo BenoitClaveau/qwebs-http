@@ -22,5 +22,6 @@ describe("http-router", () => {
         expect(isitget.routers[0].methodName).to.be("getInfo");
         expect(isitget.routers[0].route).to.be("/info");
         expect(isitget.routers[0].serviceName).to.be("$info");
+        await qwebs.unload();
     });
 })

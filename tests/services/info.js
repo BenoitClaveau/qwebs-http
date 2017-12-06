@@ -7,6 +7,7 @@ const Writable = require('stream').Writable;
 const Readable = require('stream').Readable;
 const fs =  require('fs');
 const JSONStream = require("JSONStream");
+const through2 = require("through2");
 
 class InfoService {
 	constructor($auth) {	

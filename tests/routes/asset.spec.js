@@ -1,13 +1,22 @@
 /*!
  * qwebs
- * Copyright(c) 2016 Benoît Claveau <benoit.claveau@gmail.com>
+ * Copyright(c) 2017 Benoît Claveau <benoit.claveau@gmail.com>
  * MIT Licensed
  */
 "use strict";
 
+const expect = require("expect.js");
 const Qwebs = require("qwebs");
-const Asset = require('../../lib/routes/asset');
 const http = require("http");
+const request = require("request");
+const fs =  require("fs");
+const JSONStream =  require("JSONStream");
+const process =  require("process");
+const util = require('util');
+
+process.on("unhandledRejection", (reason, p) => {
+    console.error("Unhandled Rejection at:", p, "reason:", reason);
+});
 
 describe("asset", () => {
 

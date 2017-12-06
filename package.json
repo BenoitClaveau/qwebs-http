@@ -11,18 +11,20 @@
     "oups": "latest",
     "qwebs": "^1.0.0-beta.3",
     "uuid": "latest",
-    "vinyl": "latest"
+    "vinyl": "latest",
+    "jwt-simple": "latest"
   },
   "devDependencies": {
     "JSONStream": "latest",
     "coveralls": "latest",
     "expect.js": "latest",
     "istanbul": "latest",
-    "mocha": "latest"
+    "mocha": "latest",
+    "through2": "latest"
   },
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha tests",
-    "test-cover": "node_modules/.bin/istanbul cover node_modules/mocha/bin/mocha tests && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "test": "node node_modules/mocha/bin/mocha --recursive tests/**/*.spec.js",
+    "test-cover": "node_modules/.bin/istanbul cover node_modules/mocha/bin/mocha --recursive tests/**/*.spec.js"
   },
   "repository": {
     "type": "git",

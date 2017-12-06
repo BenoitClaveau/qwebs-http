@@ -9,22 +9,26 @@ const fs =  require('fs');
 const JSONStream = require("JSONStream");
 
 class InfoService {
-	constructor() {	
+	constructor($auth) {	
+		this.auth = $auth;
 	};
 	
-	whoiam() {
-		return "I'm Info service.";
+	whoiam(ask, reply) {
+		reply.contentType = "plan/text";
+		reply.end("I'm Info service.");
 	};
 
-	helloworld() {
-		return "Hello world.";
+	helloworld(ask, reply) {
+		reply.contentType = "plan/text";
+		reply.end("Hello world.");
 	};
 
 	getInfo(ask, reply) {
-		let content = {
-			text: "I'm Info service."
-		};
-		reply.end(content);
+		reply.end({ text: "I'm Info service." });
+	};
+
+	httpAuthInfo(ask, reply) {
+		reply.end({ text: "I'm Info service." });
 	};
 
 	getFile(ask, reply) {
@@ -93,6 +97,14 @@ class InfoService {
 		})
 	};
 
+	async connect(ask, reply) {
+        reply.outputType = "object";
+        ask.pipe(through2.obj(async (chunk, enc, callback) => {
+            const token = this.auth.encode(chunk);
+            callback(null, {token});
+        })).pipe(reply);
+	};
+	
 	/*
 	getStreamWithString(reply) {
 		const stream = Readable({objectMode: true}); 

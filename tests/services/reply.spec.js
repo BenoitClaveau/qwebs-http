@@ -26,10 +26,13 @@ require("process").on('unhandledRejection', (reason, p) => {
     console.error('Unhandled Rejection at:', p, 'reason:', reason);
 });
 
+let qwebs;
+beforeEach(() => qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000 }}}));
+afterEach(() => qwebs.unload());
+
 describe("reply", () => {
 
     it("404", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 2999 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         const http = await qwebs.resolve("$http");
@@ -37,7 +40,7 @@ describe("reply", () => {
         await qwebs.load();
         const client = await qwebs.resolve("$client");
         try {
-            await client.get({ url: "http://localhost:2999/info2", json: true });
+            await client.get({ url: "http://localhost:3000/info2", json: true });
             throw new Error("Unexpected.")
         }
         catch(error) {
@@ -46,7 +49,6 @@ describe("reply", () => {
     });
 
     it("json object", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         const http = await qwebs.resolve("$http");
@@ -59,14 +61,13 @@ describe("reply", () => {
     });
 
     it("json stream", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3001 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         const http = await qwebs.resolve("$http");
         await http.get("/stream", "$info", "getStream");
         await qwebs.load();
         const client = await qwebs.resolve("$client");
-        const res = await client.get({ url: "http://localhost:3001/stream", json: true });
+        const res = await client.get({ url: "http://localhost:3000/stream", json: true });
         expect(res.statusCode).to.be(200);
         expect(res.body.length).to.be(2);
         expect(res.body.shift().id).to.be(1);
@@ -74,14 +75,13 @@ describe("reply", () => {
     });
 
     it("json long stream", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3002 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         const http = await qwebs.resolve("$http");
         await http.get("/stream", "$info", "getStreamWithTimeout");
         await qwebs.load();
         const client = await qwebs.resolve("$client");
-        const res = await client.get({ url: "http://localhost:3002/stream", json: true });
+        const res = await client.get({ url: "http://localhost:3000/stream", json: true });
         expect(res.statusCode).to.be(200);
         expect(res.body.length).to.be(2);
         expect(res.body.shift().id).to.be(3);
@@ -89,26 +89,24 @@ describe("reply", () => {
     }).timeout(10000);
 
     it("file", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3003 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         const http = await qwebs.resolve("$http");
         await http.get("/file", "$info", "getFile", { objectMode: null });
         await qwebs.load();
-        request.get({ url: "http://localhost:3003/file" }).on("data", chunk => {
+        request.get({ url: "http://localhost:3000/file" }).on("data", chunk => {
             //console.log(chunk.toString())
         })
         .pipe(fs.createWriteStream(`${__dirname}/../data/output/file.js`));
     });
 
     it("array", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3004 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         const http = await qwebs.resolve("$http");
         await http.get("/array", "$info", "getArray");
         await qwebs.load();
-        request.get({ url: "http://localhost:3004/array", json: true }).on("data", chunk => {
+        request.get({ url: "http://localhost:3000/array", json: true }).on("data", chunk => {
                 //console.log(chunk.toString())
             })
             .pipe(fs.createWriteStream(`${__dirname}/../data/output/file.js`));

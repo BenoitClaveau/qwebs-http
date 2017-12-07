@@ -5,7 +5,7 @@
  */
 "use strict";
 
-const Auth = require("../../lib/services/auth");
+const Auth = require("../../lib/services/auth-jwt-token");
 const Qwebs = require("qwebs");
 const expect = require("expect.js");
 const process =  require("process");

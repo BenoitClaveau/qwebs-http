@@ -18,59 +18,58 @@ process.on("unhandledRejection", (reason, p) => {
     console.error("Unhandled Rejection at:", p, "reason:", reason);
 });
 
+let qwebs;
+beforeEach(() => qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000 }}}));
+afterEach(() => qwebs.unload());
+
 describe("ask", () => {
 
     it("post object -> object", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 2996 }}});
-        await qwebs.inject("$http", "../../index");
-        await qwebs.inject("$info", "./info");
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
         await qwebs.load();
         
         const http = await qwebs.resolve("$http");
         await http.post("/save", "$info", "saveOne");
         const client = await qwebs.resolve("$client");
-        await client.post({ url: "http://localhost:2996/save", json: {
+        const res = await client.post({ url: "http://localhost:2996/save", json: {
             name: "ben",
             value: 0,
             test: "454566"
-        } }).then(res => {
-            expect(res.body.name).to.be("ben");
-            expect(res.body.value).to.be(0);
-            expect(res.body.test).to.be("454566");
-        });
+        }});
+        expect(res.body.name).to.be("ben");
+        expect(res.body.value).to.be(0);
+        expect(res.body.test).to.be("454566");
     });
 
     it("post object -> array", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 2997 }}});
-        await qwebs.inject("$http", "../../index");
-        await qwebs.inject("$info", "./info");
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
         await qwebs.load();
         
         const http = await qwebs.resolve("$http");
         await http.post("/save", "$info", "saveMany");
         const client = await qwebs.resolve("$client");
-        await client.post({ url: "http://localhost:2997/save", json: {
+        const res = await client.post({ url: "http://localhost:3000/save", json: {
             name: "ben",
             value: 0,
             test: "454566"
-        } }).then(res => {
-            expect(res.body.length).to.be(1);
-            expect(res.body[0].name).to.be("ben");
-            expect(res.body[0].value).to.be(0);
-            expect(res.body[0].test).to.be("454566");
-        });
+        }});
+        expect(res.body.length).to.be(1);
+        expect(res.body[0].name).to.be("ben");
+        expect(res.body[0].value).to.be(0);
+        expect(res.body[0].test).to.be("454566");
     });
 
     it("post array -> object", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 2998 }}});
-        await qwebs.inject("$http", "../../index");
-        await qwebs.inject("$info", "./info");
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
         await qwebs.load();
         
         const http = await qwebs.resolve("$http");
         await http.post("/save", "$info", "saveOne");
         const client = await qwebs.resolve("$client");
-        await client.post({ url: "http://localhost:2998/save", json: [
+        const res = await client.post({ url: "http://localhost:3000/save", json: [
             {
                 name: "ben",
                 value: 0,
@@ -81,23 +80,21 @@ describe("ask", () => {
                 value: 32,
                 test: "zz"
             }
-        ]}).then(res => {
-            expect(res.body.name).to.be("ben");
-            expect(res.body.value).to.be(0);
-            expect(res.body.test).to.be("454566");
-        });
+        ]})
+        expect(res.body.name).to.be("ben");
+        expect(res.body.value).to.be(0);
+        expect(res.body.test).to.be("454566");
     });
     
     it("post array -> array", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 2999 }}});
-        await qwebs.inject("$http", "../../index");
-        await qwebs.inject("$info", "./info");
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
         await qwebs.load();
         
         const http = await qwebs.resolve("$http");
         await http.post("/save", "$info", "saveMany");
         const client = await qwebs.resolve("$client");
-        const response = await client.post({ url: "http://localhost:2999/save", json: [
+        const res = await client.post({ url: "http://localhost:3000/save", json: [
             {
                 name: "ben",
                 value: 0,
@@ -108,21 +105,19 @@ describe("ask", () => {
                 value: 32,
                 test: "zz"
             }
-        ]}).then(res => {
-            expect(res.body.length).to.be(2);
-            expect(res.body[0].name).to.be("ben");
-            expect(res.body[0].value).to.be(0);
-            expect(res.body[0].test).to.be("454566");
-            expect(res.body[1].name).to.be("toto");
-            expect(res.body[1].value).to.be(32);
-            expect(res.body[1].test).to.be("zz");
-        });
+        ]})
+        expect(res.body.length).to.be(2);
+        expect(res.body[0].name).to.be("ben");
+        expect(res.body[0].value).to.be(0);
+        expect(res.body[0].test).to.be("454566");
+        expect(res.body[1].name).to.be("toto");
+        expect(res.body[1].value).to.be(32);
+        expect(res.body[1].test).to.be("zz");
     });
 
     it("upload json stream", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000 }}});
-        await qwebs.inject("$http", "../../index");
-        await qwebs.inject("$info", "./info");
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
         await qwebs.load();
         const http = await qwebs.resolve("$http");
         await http.post("/save", "$info", "saveMany");
@@ -154,9 +149,8 @@ describe("ask", () => {
     });
 
     it("upload image stream", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3001 }}});
-        await qwebs.inject("$http", "../../index");
-        await qwebs.inject("$info", "./info");
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
         await qwebs.load();
         const http = await qwebs.resolve("$http");
         await http.post("/save", "$info", "saveMany");
@@ -173,7 +167,7 @@ describe("ask", () => {
             .on("end", () => {
                 console.log("FILE END", new Date())
             })
-            .pipe(request.post("http://localhost:3001/save"))
+            .pipe(request.post("http://localhost:3000/save"))
             .on("response", response => {
                 expect(response.headers["content-type"]).to.be("application/json");
             })
@@ -188,9 +182,8 @@ describe("ask", () => {
     });
 
     it("upload json stream", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3003 }}});
-        await qwebs.inject("$http", "../../index");
-        await qwebs.inject("$info", "./info");
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
         await qwebs.load();
         const http = await qwebs.resolve("$http");
         await http.post("/upload", "$info", "saveFile");
@@ -200,7 +193,7 @@ describe("ask", () => {
               file : fs.createReadStream(`${__dirname}/../data/npm.array.json`)
             },
             method : "POST",
-            url    : "http://localhost:3003/upload",
+            url    : "http://localhost:3000/upload",
             json: true
           };
         
@@ -215,9 +208,8 @@ describe("ask", () => {
     });
 
     it("upload json object", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3004 }}});
-        await qwebs.inject("$http", "../../index");
-        await qwebs.inject("$info", "./info");
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
         await qwebs.load();
         const http = await qwebs.resolve("$http");
         await http.post("/upload", "$info", "saveFile");
@@ -227,7 +219,7 @@ describe("ask", () => {
               file : fs.createReadStream(`${__dirname}/../data/npm.object.json`)
             },
             method : "POST",
-            url    : "http://localhost:3004/upload",
+            url    : "http://localhost:3000/upload",
             json: true
           };
         
@@ -242,9 +234,8 @@ describe("ask", () => {
     });
 
     it("upload image stream", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3005 }}});
-        await qwebs.inject("$http", "../../index");
-        await qwebs.inject("$info", "./info");
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
         await qwebs.load();
         const http = await qwebs.resolve("$http");
         await http.post("/upload", "$info", "uploadImage");
@@ -254,7 +245,7 @@ describe("ask", () => {
                 file : fs.createReadStream(`${__dirname}/../data/world.png`)
             },
             method : "POST",
-            url    : "http://localhost:3005/upload"
+            url    : "http://localhost:3000/upload"
         };
         
         const filepath = `${__dirname}/../data/output/world.png`;

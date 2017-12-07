@@ -18,8 +18,8 @@ describe("options", () => {
 
     it("/info", async () => {
         let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3005 }}});
-        await qwebs.inject("$http", "../../index");
-        await qwebs.inject("$info", "../services/info");
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "../services/info");
         await qwebs.load();
         const http = await qwebs.resolve("$http");
         await http.post("/info", "$info", "getInfo");

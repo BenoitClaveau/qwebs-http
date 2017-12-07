@@ -20,7 +20,7 @@ process.on("unhandledRejection", (reason, p) => {
 
 let qwebs;
 beforeEach(() => qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000 }}}));
-afterEach(() => qwebs.unload());
+afterEach(async () => await qwebs.unload());
 
 describe("ask", () => {
 
@@ -32,7 +32,7 @@ describe("ask", () => {
         const http = await qwebs.resolve("$http");
         await http.post("/save", "$info", "saveOne");
         const client = await qwebs.resolve("$client");
-        const res = await client.post({ url: "http://localhost:2996/save", json: {
+        const res = await client.post({ url: "http://localhost:3000/save", json: {
             name: "ben",
             value: 0,
             test: "454566"

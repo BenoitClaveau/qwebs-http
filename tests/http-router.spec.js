@@ -15,7 +15,7 @@ process.on("unhandledRejection", (reason, p) => {
 
 let qwebs;
 beforeEach(() => qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000 }}}));
-afterEach(() => qwebs.unload());
+afterEach(async () => await qwebs.unload());
 
 describe("http-router", () => {
 

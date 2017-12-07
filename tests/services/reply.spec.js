@@ -28,16 +28,16 @@ require("process").on('unhandledRejection', (reason, p) => {
 
 let qwebs;
 beforeEach(() => qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000 }}}));
-afterEach(() => qwebs.unload());
+afterEach(async () => await qwebs.unload());
 
 describe("reply", () => {
 
     it("404", async () => {
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
+        await qwebs.load();
         const http = await qwebs.resolve("$http");
         await http.get("/info", "$info", "getInfo");
-        await qwebs.load();
         const client = await qwebs.resolve("$client");
         try {
             await client.get({ url: "http://localhost:3000/info2", json: true });
@@ -51,9 +51,9 @@ describe("reply", () => {
     it("json object", async () => {
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
+        await qwebs.load();
         const http = await qwebs.resolve("$http");
         await http.get("/info", "$info", "getInfo");
-        await qwebs.load();
         const client = await qwebs.resolve("$client");
         const res = await client.get({ url: "http://localhost:3000/info", json: true });
         expect(res.statusCode).to.be(200);
@@ -63,9 +63,9 @@ describe("reply", () => {
     it("json stream", async () => {
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
+        await qwebs.load();
         const http = await qwebs.resolve("$http");
         await http.get("/stream", "$info", "getStream");
-        await qwebs.load();
         const client = await qwebs.resolve("$client");
         const res = await client.get({ url: "http://localhost:3000/stream", json: true });
         expect(res.statusCode).to.be(200);
@@ -77,9 +77,9 @@ describe("reply", () => {
     it("json long stream", async () => {
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
+        await qwebs.load();
         const http = await qwebs.resolve("$http");
         await http.get("/stream", "$info", "getStreamWithTimeout");
-        await qwebs.load();
         const client = await qwebs.resolve("$client");
         const res = await client.get({ url: "http://localhost:3000/stream", json: true });
         expect(res.statusCode).to.be(200);
@@ -91,9 +91,9 @@ describe("reply", () => {
     it("file", async () => {
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
+        await qwebs.load();
         const http = await qwebs.resolve("$http");
         await http.get("/file", "$info", "getFile", { objectMode: null });
-        await qwebs.load();
         request.get({ url: "http://localhost:3000/file" }).on("data", chunk => {
             //console.log(chunk.toString())
         })
@@ -103,9 +103,9 @@ describe("reply", () => {
     it("array", async () => {
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
+        await qwebs.load();
         const http = await qwebs.resolve("$http");
         await http.get("/array", "$info", "getArray");
-        await qwebs.load();
         request.get({ url: "http://localhost:3000/array", json: true }).on("data", chunk => {
                 //console.log(chunk.toString())
             })

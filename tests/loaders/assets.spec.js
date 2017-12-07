@@ -14,7 +14,7 @@ process.on("unhandledRejection", (reason, p) => {
 
 let qwebs;
 beforeEach(() => qwebs = new Qwebs({ dirname: __dirname }));
-afterEach(() => qwebs.unload());
+afterEach(async () => await qwebs.unload());
 
 describe("Assets loader", () => {
 

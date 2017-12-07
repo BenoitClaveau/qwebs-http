@@ -14,10 +14,13 @@ process.on("unhandledRejection", (reason, p) => {
     console.error("Unhandled Rejection at:", p, "reason:", reason);
 });
 
-describe("options", () => {
+let qwebs;
+beforeEach(() => qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000 }}}));
+afterEach(async () => await qwebs.unload());
+
+describe("options-leaf", () => {
 
     it("/info", async () => {
-        let qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3005 }}});
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "../services/info");
         await qwebs.load();
@@ -26,7 +29,7 @@ describe("options", () => {
 
         const requestOptions = {
             method : "OPTIONS",
-            url    : "http://localhost:3005/info"
+            url    : "http://localhost:3000/info"
         };
 
         request(requestOptions, (error, response, body) => {

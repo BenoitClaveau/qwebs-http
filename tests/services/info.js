@@ -29,7 +29,7 @@ class InfoService {
 	};
 
 	httpAuthInfo(ask, reply) {
-		reply.end({ text: "I'm Info service, but I'm authenticated." });
+		reply.end({ text: "I'm Info service." });
 	};
 
 	getFile(ask, reply) {

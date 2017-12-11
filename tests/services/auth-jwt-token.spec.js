@@ -14,9 +14,14 @@ process.on("unhandledRejection", (reason, p) => {
     console.error("Unhandled Rejection at:", p, "reason:", reason);
 });
 
-let qwebs;
-beforeEach(() => qwebs = new Qwebs({ dirname: __dirname, config: { http: { port: 3000, jwt: { secret: "01234" }}}}));
-afterEach(async () => await qwebs.unload());
+const config = {
+    http: {
+        port: 3000,
+        jwt: {
+            secret: "01234"
+        }
+    }
+}
 
 describe("auth-jwt-token", () => {
 
@@ -38,6 +43,7 @@ describe("auth-jwt-token", () => {
     });
 
     it("identify", async () => {
+        let qwebs = new Qwebs({ dirname: __dirname, config: config });
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         await qwebs.load();
@@ -56,6 +62,8 @@ describe("auth-jwt-token", () => {
         const res2 = await client.post({ url: "http://localhost:3000/connect", json: { id: 1024 }});
         expect(res2.body.token).not.to.be(null);
         const res3 = await client.get({ url: "http://localhost:3000/info", auth: { "bearer": res2.body.token }, json: true });
-        expect(res3.body).to.eql({ text: "I'm Info service, but I'm authenticated." });
+        console.log(res3.body)
+        expect(res3.body).to.eql({ id: 1024 });
+        qwebs.unload();
     });
 });

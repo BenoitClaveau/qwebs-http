@@ -7,4 +7,3 @@
 'use strict';
 
 module.exports = require('./lib/qwebs-http');
-module.exports.AuthStream = require('./lib/utils/auth-stream');

@@ -7,3 +7,4 @@
 'use strict';
 
 module.exports = require('./lib/qwebs-http');
+module.exports.AuthJwtToken = require('./lib/services/auth-jwt-token');

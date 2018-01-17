@@ -3,11 +3,9 @@
  * Copyright(c) 2016 Benoît Claveau <benoit.claveau@gmail.com>
  * MIT Licensed
 */
-const Writable = require('stream').Writable;
-const Readable = require('stream').Readable;
+const { Readable, Writable, Transform } = require('stream').Writable;
 const fs =  require('fs');
 const JSONStream = require("JSONStream");
-const through2 = require("through2");
 
 class InfoService {
 	constructor($auth) {	
@@ -99,11 +97,12 @@ class InfoService {
 	};
 
 	async connect(ask, reply) {
+		const self = this;
         reply.outputType = "object";
-        ask.pipe(through2.obj(async (chunk, enc, callback) => {
-            const token = this.auth.encode(chunk);
+        ask.pipe(new Transform({ objectMode: true, async transform(chunk, enc, callback) {
+            const token = self.auth.encode(chunk);
             callback(null, {token});
-        })).pipe(reply);
+        }})).pipe(reply);
 	};
 	
 	/*

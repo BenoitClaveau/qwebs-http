@@ -8,10 +8,11 @@
 const Auth = require("../../lib/services/auth-jwt-token");
 const Qwebs = require("qwebs");
 const expect = require("expect.js");
-const process =  require("process");
+const process = require("process");
+const { inspect } = require("util");
 
 process.on("unhandledRejection", (reason, p) => {
-    console.error("Unhandled Rejection at:", p, "reason:", reason);
+    console.error("Unhandled Rejection at:", p, "reason:", inspect(reason));
 });
 
 const config = {

@@ -9,13 +9,14 @@ const expect = require("expect.js");
 const Qwebs = require("qwebs");
 const http = require("http");
 const request = require("request");
-const fs =  require("fs");
-const JSONStream =  require("JSONStream");
-const process =  require("process");
+const fs = require("fs");
+const JSONStream = require("JSONStream");
+const process = require("process");
 const util = require('util');
+const { inspect } = require("util");
 
 process.on("unhandledRejection", (reason, p) => {
-    console.error("Unhandled Rejection at:", p, "reason:", reason);
+    console.error("Unhandled Rejection at:", p, "reason:", inspect(reason));
 });
 
 // describe("asset", () => {

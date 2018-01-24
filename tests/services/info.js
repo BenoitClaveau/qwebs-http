@@ -3,9 +3,8 @@
  * Copyright(c) 2016 Benoît Claveau <benoit.claveau@gmail.com>
  * MIT Licensed
 */
-const { Readable, Writable, Transform } = require('stream').Writable;
-const fs =  require('fs');
-const JSONStream = require("JSONStream");
+const { Readable, Writable, Transform } = require('stream');
+const fs = require('fs');
 
 class InfoService {
 	constructor($auth) {	
@@ -104,80 +103,6 @@ class InfoService {
             callback(null, {token});
         }})).pipe(reply);
 	};
-	
-	/*
-	getStreamWithString(reply) {
-		const stream = Readable({objectMode: true}); 
-		stream._read = () => {};                     
-		stream.push("{ id: 1 }");
-    	stream.push("{ id: 2 }");
-        stream.push(null);
-
-		return response.end({ request: request, stream: stream });
-	};
-
-	getStreamMultipleTypes(reply) {
-		const stream = Readable({objectMode: true}); 
-		stream._read = () => {};                     
-		stream.push("{ id: 1 }");
-    	stream.push({ id: 2, name: "myname" });
-		stream.push(33);
-        stream.push(null);
-
-		return response.end({ request: request, stream: stream });
-	};
-
-	getStreamError(reply) {
-		const stream = Readable({objectMode: true}); 
-		stream._read = () => {};                     
-		stream.push({ id: 1 });
-		stream.emit("error", new Error("Error in stream."));
-    	stream.push({ id: 2 });
-        stream.push(null);
-
-		return response.end({ request: request, stream: stream });
-	};
-
-	getStreamErrorAfterSending(reply) {
-		const stream = Readable({objectMode: true}); 
-		stream._read = () => {};                     
-		
-		setTimeout(() => {
-			stream.push({ id: 1 });
-			setTimeout(() => {
-				stream.push({ id: 2 });
-				setTimeout(() => {
-					stream.emit("error", new Error("Error in stream."));
-					//stream.push(null);
-				}, 500);
-			}, 500);
-		}, 100)
-
-		return response.end({ request: request, stream: stream });
-	};
-	
-	
-	
-	update(reply) {
-		let content = {
-			status: "updated"
-		};
-		reply.end(content);
-	};
-	
-	delete(reply) {
-		let content = {
-			status: "deleted"
-		};
-		reply.end(content);
-	};
-	*/
 };
-
-class MyReadable extends Readable {
-  constructor(options) {
-    super(options);
-  }
-}
 
 exports = module.exports = InfoService;

@@ -19,8 +19,7 @@
     "coveralls": "latest",
     "expect.js": "latest",
     "istanbul": "latest",
-    "mocha": "latest",
-    "through2": "latest"
+    "mocha": "latest"
   },
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha --recursive tests/**/*.spec.js",

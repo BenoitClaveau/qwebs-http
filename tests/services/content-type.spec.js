@@ -7,9 +7,11 @@
 
 const expect = require("expect.js");
 const ContentType = new require('../../lib/services/content-type');
+const process = require("process");
+const { inspect } = require("util");
 
-require("process").on('unhandledRejection', (reason, p) => {
-    console.error('Unhandled Rejection at:', p, 'reason:', reason);
+process.on('unhandledRejection', (reason, p) => {
+    console.error('Unhandled Rejection at:', p, 'reason:', inspect(reason));
 });
 
 describe("ContentType", () => {

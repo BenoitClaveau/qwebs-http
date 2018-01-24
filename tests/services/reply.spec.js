@@ -18,12 +18,13 @@ const Qwebs = require("qwebs");
 const { FromArray } = require("qwebs");
 const http = require("http");
 const request = require('request');
-const fs =  require('fs');
-const domain =  require('domain');
+const fs = require('fs');
+const domain = require('domain');
 const JSONStream = require('JSONStream');
+const { inspect } = require("util");
 
 require("process").on('unhandledRejection', (reason, p) => {
-    console.error('Unhandled Rejection at:', p, 'reason:', reason);
+    console.error('Unhandled Rejection at:', p, 'reason:', inspect(reason));
 });
 
 let qwebs;

@@ -35,11 +35,11 @@ describe("ask", () => {
         const res = await client.post({ url: "http://localhost:3000/save", json: {
             name: "ben",
             value: 0,
-            test: "454566"
+            test: 454566
         }});
         expect(res.body.name).to.be("ben");
         expect(res.body.value).to.be(0);
-        expect(res.body.test).to.be("454566");
+        expect(res.body.test).to.be(454566);
     });
 
     it("post object -> array", async () => {

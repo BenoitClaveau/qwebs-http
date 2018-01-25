@@ -59,9 +59,8 @@ class InfoService {
 		}, 100);
 	};
 
-	saveOne(ask, reply) {
-		reply.outputType = "object";
-		ask.pipe(reply);
+	saveOne(context, ask, reply, headers) {
+		ask.obj.pipe(reply.obj);
 	};
 
 	saveMany(ask, reply) {

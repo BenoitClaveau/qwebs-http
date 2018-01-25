@@ -96,7 +96,7 @@ describe("http-router", () => {
         expect(res.body).to.be("Hello world.");
     });
 
-    xit("multiple end route", async () => {
+    it("multiple end route", async () => {
         qwebs.inject("$http", "../index");
         qwebs.inject("$info", "./services/info");
         await qwebs.load();

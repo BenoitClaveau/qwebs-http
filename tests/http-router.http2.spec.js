@@ -52,11 +52,13 @@ describe("http-router", () => {
         qwebs.inject("$info", "./services/info");
         await qwebs.load();
         
+        const http = await qwebs.resolve("$http");
+        await http.get("/whoiam", "$info", "whoiam");
+        await http.get("/helloworld", "$info", "helloworld");
+        await http.get("/array", "$info", "getArray");
+        
         await timeout(600000)
 
-        const http = await qwebs.resolve("$http");
-        http.get("/whoiam", "$info", "whoiam");
-        http.get("/helloworld", "$info", "helloworld");
         
         const client = http2.connect('https://localhost:8443',  {
            ca: fs.readFileSync(`${__dirname}/certificates/certificate.pem`)

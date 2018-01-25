@@ -12,12 +12,12 @@ class InfoService {
 	};
 	
 	whoiam(ask, reply) {
-		reply.contentType = "plan/text";
+		reply.contentType = "text/html";
 		reply.end("I'm Info service.");
 	};
 
 	helloworld(ask, reply) {
-		reply.contentType = "plan/text";
+		reply.contentType = "text/html";
 		reply.end("Hello world.");
 	};
 
@@ -30,7 +30,7 @@ class InfoService {
 	};
 
 	getFile(ask, reply) {
-		reply.contentType = "text/plain";
+		reply.contentType = "text/html";
 		fs.createReadStream(`${__dirname}/../data/npm.array.json`).pipe(reply);
 	};
 

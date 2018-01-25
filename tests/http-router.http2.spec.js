@@ -20,6 +20,9 @@ beforeEach(() => qwebs = new Qwebs({ dirname: __dirname, config: {
         port: 8443, 
         cert: `${__dirname}/certificates/certificate.pem`,
         key: `${__dirname}/certificates/private-key.pem`,
+    },
+    "http2-unsecure": {
+        port: 8000, 
     }
 }}));
 afterEach(async () => await qwebs.unload());

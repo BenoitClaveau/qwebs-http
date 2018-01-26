@@ -60,8 +60,8 @@ class InfoService {
 		}, 100);
 	};
 
-	saveOne(context, ask, reply, headers) {
-		ask.obj.pipe(reply.obj);
+	saveOne(context, stream, headers) {
+		stream.obj.pipe(stream.obj);
 	};
 
 	saveMany(ask, reply) {

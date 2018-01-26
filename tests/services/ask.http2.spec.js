@@ -30,23 +30,23 @@ afterEach(async () => await qwebs.unload());
 
 describe("http2 ask", () => {
 
-    // xit("post object -> object", async () => {
-    //     qwebs.inject("$http", "../../index");
-    //     qwebs.inject("$info", "./info");
-    //     await qwebs.load();
+    it("post object -> object", async () => {
+        qwebs.inject("$http", "../../index");
+        qwebs.inject("$info", "./info");
+        await qwebs.load();
         
-    //     const http = await qwebs.resolve("$http");
-    //     await http.post("/save", "$info", "saveOne");
-    //     const client = await qwebs.resolve("$client");
-    //     const res = await client.post({ url: "https://localhost:8443/save", rejectUnauthorized: false, json: {
-    //         name: "ben",
-    //         value: 0,
-    //         test: 454566
-    //     }});
-    //     expect(res.body.name).to.be("ben");
-    //     expect(res.body.value).to.be(0);
-    //     expect(res.body.test).to.be(454566);
-    // }).timeout(60000);
+        const http = await qwebs.resolve("$http");
+        await http.post("/save", "$info", "saveOne");
+        const client = await qwebs.resolve("$client");
+        const res = await client.post({ url: "https://localhost:8443/save", rejectUnauthorized: false, json: {
+            name: "ben",
+            value: 0,
+            test: 454566
+        }});
+        expect(res.body.name).to.be("ben");
+        expect(res.body.value).to.be(0);
+        expect(res.body.test).to.be(454566);
+    }).timeout(60000);
     
     it("upload image", async () => {
         qwebs.inject("$http", "../../index");

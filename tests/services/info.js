@@ -85,13 +85,13 @@ class InfoService {
 		})
 	};
 
-	uploadImage(context, ask, reply, headers) {
-		ask.on("file", (file, filename, encoding, mimetype) => {
+	uploadImage(context, stream, headers) {
+		stream.on("file", (file, filename, encoding, mimetype) => {
 			const parsed = path.parse(filename);
 			const filepath = `${__dirname}/../data/output/${parsed.name}.server${parsed.ext}`;
 			if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
 			file.pipe(fs.createWriteStream(filepath)).on("finish", () => {
-				fs.createReadStream(filepath).pipe(reply);
+				fs.createReadStream(filepath).pipe(stream);
 			})
 		})
 	};

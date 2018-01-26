@@ -5,6 +5,7 @@
 */
 const { Readable, Writable, Transform } = require('stream');
 const fs = require('fs');
+const path = require('path');
 
 class InfoService {
 	constructor($auth) {	
@@ -84,13 +85,14 @@ class InfoService {
 		})
 	};
 
-	uploadImage(ask, reply) {
-		const stream = Readable({objectMode: true}); 
-		stream._read = () => {};
-		stream.pipe(reply);
-
-		ask.on("file", (fieldname, file, filename, encoding, mimetype) => {
-			file.pipe(reply);
+	uploadImage(context, ask, reply, headers) {
+		ask.on("file", (file, filename, encoding, mimetype) => {
+			const parsed = path.parse(filename);
+			const filepath = `${__dirname}/../data/output/${parsed.name}.server${parsed.ext}`;
+			if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
+			file.pipe(fs.createWriteStream(filepath)).on("finish", () => {
+				fs.createReadStream(filepath).pipe(reply);
+			})
 		})
 	};
 

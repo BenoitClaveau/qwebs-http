@@ -145,8 +145,9 @@ describe("duplex stream", () => {
         const pile = [];
         const duplex = new Duplex({
             read(n) {
-                console.log("[read]", n);
-                this.push(data.pop())
+                const value = data.pop();
+                console.log("[read]");
+                this.push(value ? value : null) //Do not use emit to be able to buffer data
             },            
             write(chunk, encoding, callback) {
                 //console.log("[write]", data.toString())
@@ -161,6 +162,11 @@ describe("duplex stream", () => {
             //duplex.emit("data", data);
             //console.log()
         })
+
+        transform.on("finish", () => {
+            response.end();
+            duplex.emit("finish")
+        });
 
         duplex.pipe(duplex);
 

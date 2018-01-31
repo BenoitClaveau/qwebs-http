@@ -158,7 +158,7 @@ describe("duplex stream", () => {
 
         transform.on("data", data => {
             console.log("[on data]", data.toString());
-            response.write(data)
+            response.write(data);
             //duplex.emit("data", data);
             //console.log()
         })

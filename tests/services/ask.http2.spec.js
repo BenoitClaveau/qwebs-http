@@ -30,7 +30,7 @@ afterEach(async () => await qwebs.unload());
 
 describe("http2 ask", () => {
 
-    it("post object -> object", async () => {
+    xit("post object -> object", async () => {
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         await qwebs.load();
@@ -67,6 +67,12 @@ describe("http2 ask", () => {
         return new Promise((resolve, reject) => {
             request(requestOptions)
                 .on("error", reject)
+                .on("data", data => {
+                    console.log("[data][Client]", data.length)
+                })
+                .on("finish", data => {
+                    console.log("[finish][Client]", data)
+                })
                 .pipe(fs.createWriteStream(`${__dirname}/../data/output/world.client.png`))
                 .on("finish", resolve)
                 .on("error", reject)

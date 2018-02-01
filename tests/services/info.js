@@ -12,47 +12,46 @@ class InfoService {
 		this.auth = $auth;
 	};
 	
-	whoiam(ask, reply) {
-		reply.contentType = "text/html";
-		reply.end("I'm Info service.");
+	whoiam(context, stream, headers) {
+		stream.contentType("text/html");
+		stream.end("I'm Info service.");
 	};
 
-	helloworld(ask, reply) {
-		reply.contentType = "text/html";
-		reply.end("Hello world.");
+	helloworld(context, stream, headers) {
+		stream.contentType("text/html");
+		stream.end("Hello world.");
 	};
 
-	getInfo(ask, reply) {
-		reply.end({ text: "I'm Info service." });
+	getInfo(context, stream, headers) {
+		stream.end({ text: "I'm Info service." });
 	};
 
-	httpAuthInfo(ask, reply) {
-		reply.end({ text: "I'm Info service." });
+	httpAuthInfo(context, stream, headers) {
+		stream.end({ text: "I'm Info service." });
 	};
 
-	getFile(ask, reply) {
-		reply.contentType = "text/html";
-		fs.createReadStream(`${__dirname}/../data/npm.array.json`).pipe(reply);
+	getFile(context, stream, headers) {
+		stream.contentType("text/html");
+		fs.createReadStream(`${__dirname}/../data/npm.array.json`).pipe(stream);
 	};
 
-	getArray(ask, reply) {
-		reply.contentType = "application/json";
-		fs.createReadStream(`${__dirname}/../data/npm.array.json`).pipe(reply);
+	getArray(context, stream, headers) {
+		fs.createReadStream(`${__dirname}/../data/npm.array.json`).pipe(stream);
 	};
 
-	getStream(ask, reply) {
+	getStream(context, stream, headers) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};
-		stream.pipe(reply);
+		stream.pipe(stream);
 		stream.push({ id: 1 });
     	stream.push({ id: 2 });
         stream.push(null);
 	};
 
-	getStreamWithTimeout(ask, reply) {
+	getStreamWithTimeout(context, stream, headers) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};
-		stream.pipe(reply);
+		stream.pipe(stream);
 		setTimeout(() => {
 			stream.push({ id: 3 });
 			stream.push({ id: 4 });
@@ -64,16 +63,16 @@ class InfoService {
 		stream.obj.pipe(stream);
 	};
 
-	saveMany(ask, reply) {
-		ask.pipe(reply);
+	saveMany(context, stream, headers) {
+		stream.pipe(stream);
 	};
 
-	saveFile(ask, reply) {
+	saveFile(context, stream, headers) {
 		const stream = Readable({objectMode: true}); 
 		stream._read = () => {};
-		stream.pipe(reply);
+		stream.pipe(stream);
 
-		ask.on("file", (fieldname, file, filename, encoding, mimetype) => {
+		stream.on("file", (fieldname, file, filename, encoding, mimetype) => {
 			const filepath = `${__dirname}/../data/output/${filename}`;
 			if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
 
@@ -96,13 +95,12 @@ class InfoService {
 		})
 	};
 
-	async connect(ask, reply) {
+	async connect(context, stream, headers) {
 		const self = this;
-        reply.outputType = "object";
-        ask.pipe(new Transform({ objectMode: true, async transform(chunk, enc, callback) {
+        stream.obj().pipe(new Transform({ objectMode: true, async transform(chunk, enc, callback) {
             const token = self.auth.encode(chunk);
             callback(null, {token});
-        }})).pipe(reply);
+        }})).pipe(stream);
 	};
 };
 

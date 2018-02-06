@@ -40,8 +40,7 @@ class InfoService {
 	};
 
 	getStream(context, stream, headers) {
-		const stream = Readable({objectMode: true}); 
-		stream._read = () => {};
+		const stream = Readable({ objectMode: true, read() {}}); 
 		stream.pipe(stream);
 		stream.push({ id: 1 });
     	stream.push({ id: 2 });
@@ -49,8 +48,7 @@ class InfoService {
 	};
 
 	getStreamWithTimeout(context, stream, headers) {
-		const stream = Readable({objectMode: true}); 
-		stream._read = () => {};
+		const stream = Readable({ objectMode: true, read() {}}); 
 		stream.pipe(stream);
 		setTimeout(() => {
 			stream.push({ id: 3 });
@@ -68,8 +66,7 @@ class InfoService {
 	};
 
 	saveFile(context, stream, headers) {
-		const stream = Readable({objectMode: true}); 
-		stream._read = () => {};
+		const stream = Readable({ objectMode: true, read() {}}); 
 		stream.pipe(stream);
 
 		stream.on("file", (fieldname, file, filename, encoding, mimetype) => {
@@ -90,14 +87,14 @@ class InfoService {
 			const filepath = `${__dirname}/../data/output/${parsed.name}.server${parsed.ext}`;
 			if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
 			file.pipe(fs.createWriteStream(filepath)).on("finish", () => {
-				fs.createReadStream(filepath).pipe(stream);
+				fs.createReadStream(filepath).pipe(stream.outBuffer);
 			})
 		})
 	};
 
 	async connect(context, stream, headers) {
 		const self = this;
-        stream.obj().pipe(new Transform({ objectMode: true, async transform(chunk, enc, callback) {
+        stream.obj.pipe(new Transform({ objectMode: true, async transform(chunk, enc, callback) {
             const token = self.auth.encode(chunk);
             callback(null, {token});
         }})).pipe(stream);

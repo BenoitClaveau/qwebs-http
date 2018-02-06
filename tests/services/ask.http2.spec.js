@@ -30,7 +30,7 @@ afterEach(async () => await qwebs.unload());
 
 describe("http2 ask", () => {
 
-    xit("post object -> object", async () => {
+    it("post object -> object", async () => {
         qwebs.inject("$http", "../../index");
         qwebs.inject("$info", "./info");
         await qwebs.load();

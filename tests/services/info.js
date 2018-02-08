@@ -6,6 +6,7 @@
 const { Readable, Writable, Transform } = require('stream');
 const fs = require('fs');
 const path = require('path');
+const pump = require('pump');
 
 class InfoService {
 	constructor($auth) {	
@@ -58,7 +59,8 @@ class InfoService {
 	};
 
 	saveOne(context, stream, headers) {
-		stream.obj.pipe(stream);
+		stream.mode("object");
+		stream.pipe(stream);
 	};
 
 	saveMany(context, stream, headers) {
@@ -82,19 +84,21 @@ class InfoService {
 	};
 
 	uploadImage(context, stream, headers) {
+		stream.mode("buffer");
 		stream.on("file", (file, filename, encoding, mimetype) => {
 			const parsed = path.parse(filename);
 			const filepath = `${__dirname}/../data/output/${parsed.name}.server${parsed.ext}`;
 			if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
 			file.pipe(fs.createWriteStream(filepath)).on("finish", () => {
-				fs.createReadStream(filepath).pipe(stream.outBuffer);
+				fs.createReadStream(filepath).pipe(stream);
 			})
 		})
 	};
 
 	async connect(context, stream, headers) {
 		const self = this;
-        stream.obj.pipe(new Transform({ objectMode: true, async transform(chunk, enc, callback) {
+		stream.mode("object");
+        stream.pipe(new Transform({ objectMode: true, async transform(chunk, enc, callback) {
             const token = self.auth.encode(chunk);
             callback(null, {token});
         }})).pipe(stream);

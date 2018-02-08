@@ -8,11 +8,12 @@
     "chalk": "latest",
     "file-type": "latest",
     "isitforme": "latest",
+    "jwt-simple": "latest",
     "oups": "latest",
+    "pump": "^3.0.0",
     "qwebs": "^1.0.0-beta.3",
     "uuid": "latest",
-    "vinyl": "latest",
-    "jwt-simple": "latest"
+    "vinyl": "latest"
   },
   "devDependencies": {
     "JSONStream": "latest",

@@ -1,6 +1,6 @@
 {
   "name": "qwebs-http",
-  "version": "1.0.0-beta.37",
+  "version": "1.0.0-beta.38",
   "description": "Http/https server for Qwebs",
   "main": "index.js",
   "dependencies": {
@@ -10,7 +10,7 @@
     "isitforme": "latest",
     "jwt-simple": "latest",
     "oups": "latest",
-    "pump": "^3.0.0",
+    "pump": "github:BenoitClaveau/pump",
     "qwebs": "^1.0.0-beta.3",
     "uuid": "latest",
     "vinyl": "latest"

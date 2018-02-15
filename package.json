@@ -10,7 +10,7 @@
     "isitforme": "latest",
     "jwt-simple": "latest",
     "oups": "latest",
-    "pump": "github:BenoitClaveau/pump",
+    "pump": "latest",
     "qwebs": "^1.0.0-beta.3",
     "uuid": "latest",
     "vinyl": "latest"
